@@ -2,7 +2,7 @@
 
 > A Claude skill for running systematic SEO audits and competitive analyses for local service businesses — built by [Southwell Media](https://southwellmedia.com).
 
-This skill gives Claude a repeatable methodology for auditing client websites and producing client-ready PDF proposals.
+This skill gives Claude a repeatable methodology for auditing client websites and producing a client-ready PDF proposal.
 
 ---
 
@@ -10,7 +10,7 @@ This skill gives Claude a repeatable methodology for auditing client websites an
 
 One deliverable per audit:
 
-- **`[Client]_SEO_Audit.pdf`** — Full proposal with competitive analysis, keyword research, technical audit, content strategy, and prioritized quick wins
+- **`[Client]_SEO_Audit.pdf`** — Full proposal with competitive analysis, keyword research, technical audit, content strategy, and prioritized quick wins. Light background, client brand colors applied as accents throughout.
 
 ## What it covers
 
@@ -48,7 +48,7 @@ seo-audit/
     ├── b2b-multistate.md           # B2B multi-state methodology
     ├── technical-checklist.md      # Full technical SEO checklist
     ├── keywords.md                 # 4-tier keyword framework
-    └── deliverables.md             # PDF specs + code patterns
+    └── deliverables.md             # PDF requirements and design guidance
 ```
 
 ---
@@ -56,8 +56,18 @@ seo-audit/
 ## Requirements
 
 - Claude with computer use enabled (for browser recon and brand color extraction)
-- Python 3 with `reportlab` and `pillow` (`pip install reportlab pillow`)
-- Canvas fonts from the [canvas-design skill](https://github.com/southwellmedia/canvas-design) at `/mnt/skills/examples/canvas-design/canvas-fonts/`
+- Python 3 with `reportlab` (`pip install reportlab`)
+- Canvas fonts from the [canvas-design skill] at `/mnt/skills/examples/canvas-design/canvas-fonts/`
+
+---
+
+## Installation
+
+Upload `seo-audit.skill` through the Claude skill manager. To build the `.skill` file from source:
+
+```bash
+zip -r seo-audit.skill seo-audit/
+```
 
 ---
 
@@ -76,7 +86,7 @@ Classification happens before any research — getting this wrong invalidates th
 
 ## Key methodology notes
 
-**Hard blockers vs. quick wins** — The skill separates issues that prevent launch (placeholder phone numbers, dead CTAs, unblocked staging domains) from optimization opportunities. These are visually distinct in the deliverable.
+**Hard blockers vs. quick wins** — The skill separates issues that prevent launch (placeholder phone numbers, dead CTAs, unblocked staging domains) from optimization opportunities. These are visually distinct in the PDF.
 
 **Brand color extraction** — Brand colors are pulled directly from the live site's CSS using browser JS, not guessed. The PDF always matches the client's actual palette.
 
@@ -90,4 +100,4 @@ Classification happens before any research — getting this wrong invalidates th
 
 MIT — use freely, attribution appreciated.
 
-Built and maintained by [Southwell Media](https://southwellmedia.com) — a Dallas-based digital agency delivering custom websites in 14-21 days for local service businesses.
+Built and maintained by [Southwell Media](https://southwellmedia.com) — a Dallas-based digital agency.
