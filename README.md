@@ -100,4 +100,4 @@ Classification happens before any research — getting this wrong invalidates th
 
 MIT — use freely, attribution appreciated.
 
-Built and maintained by [Southwell Media](https://southwellmedia.com) — a Dallas-based digital agency delivering custom websites in 14-21 days for local service businesses.
+Built and maintained by [Southwell Media](https://southwellmedia.com) — a Dallas-based digital agency.
