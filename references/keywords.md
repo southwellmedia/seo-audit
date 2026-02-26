@@ -8,20 +8,18 @@ This framework applies to both B2C and B2B — the specific terms differ but the
 ## The 4-Tier Model
 
 ### Tier 1: Primary Core (8-12 keywords)
-**What they are**: The bread-and-butter terms that define the business category.
+**What they are**: The terms that define the business category.
 **Intent**: Mixed — some searching to understand the service, most ready to buy.
-**Competition**: HIGH — national players and franchises dominate.
+**Competition**: HIGH — established players dominate.
 **Target pages**: Homepage, primary service overview page.
 **Volume**: High.
 
 Format patterns:
 - `[service] [city]`
-- `[service] [city] TX` (or relevant state)
+- `[service] [city] [state]`
 - `[service] service [city]`
-- `[service] near me` (this one is evergreen regardless of city)
+- `[service] near me` — evergreen regardless of client
 - `[service] company [city]`
-
-Example (junk removal): `junk removal Dallas`, `junk removal Dallas TX`, `junk hauling Dallas`, `junk removal service Dallas`, `junk removal near me`, `furniture removal Dallas`, `appliance removal Dallas`, `house cleanout Dallas`
 
 ---
 
@@ -32,7 +30,7 @@ Example (junk removal): `junk removal Dallas`, `junk removal Dallas TX`, `junk h
 **Target pages**: Dedicated location pages (one per location keyword cluster).
 **Volume**: Medium. Conversion rate is higher than Tier 1.
 
-This is often the biggest opportunity — national franchises can't compete here.
+This is often the biggest opportunity — established players with national reach can't compete here.
 
 Format patterns:
 - `[service] [neighborhood]`
@@ -40,90 +38,95 @@ Format patterns:
 - `[service] in [area]`
 
 Seed from: existing testimonials, service area claims, Google Business Profile coverage.
-If a testimonial mentions "Oak Lawn" — that's a Tier 2 keyword and a location page seed.
+If a testimonial mentions a neighborhood name — that's a Tier 2 keyword and a location page seed.
 
-Example (junk removal Dallas): `junk removal Oak Lawn`, `junk removal Deep Ellum`, `junk removal Uptown Dallas`, `junk removal Bishop Arts`, `junk removal Plano`, `junk removal Frisco`
+Build this list fresh for every client from their actual service area and testimonials.
 
 ---
 
 ### Tier 3: Long-Tail High-Intent (12-16 keywords)
-**What they are**: Specific, often multi-word queries from buyers with a defined need.
+**What they are**: Specific, multi-word queries from buyers ready to act NOW.
 **Intent**: Transactional — highest conversion rate of any tier.
 **Competition**: LOW — few competitors optimize for these specifically.
-**Target pages**: Service-specific pages, specialty pages, homepage for speed/same-day claims.
+**Target pages**: Service-specific pages, specialty pages.
 **Volume**: Low individually, high collectively.
 
-These convert because they signal a real job: the person isn't browsing, they have a hot tub to remove today.
+These convert because they signal an immediate, specific need. The person isn't researching —
+they have a problem in front of them today and are looking for someone to solve it.
+Build these by asking: what specific situation would make someone search for this right now?
+Be literal. The more specific the situation, the higher the conversion intent.
 
 Format patterns:
 - `same day [service] [city]`
-- `[item] removal [city]` (hot tub, piano, mattress, pool table)
-- `[situation] [service] [city]` (estate cleanout, hoarder cleanout, foreclosure cleanout)
-- `cheap [service] [city]` / `affordable [service] [city]`
-- `[service] pricing [city]` / `[service] cost [city]`
-- `[service] for [audience] [city]` (for contractors, for property managers)
-
-Example (junk removal): `same day junk removal Dallas`, `hot tub removal Dallas`, `mattress disposal Dallas TX`, `hoarder cleanout Dallas TX`, `estate cleanout Dallas`, `construction debris removal Dallas`, `junk removal pricing Dallas`
+- `emergency [service] [city]`
+- `[specific situation or item] [service] [city]`
+- `affordable [service] [city]` / `[service] pricing [city]`
+- `[service] for [specific audience] [city]`
+- `best [service] [city]`
 
 ---
 
 ### Tier 4: Informational / Blog (10-12 keywords)
 **What they are**: Questions and research queries — top-of-funnel.
 **Intent**: Informational — building topical authority, not direct conversion.
-**Competition**: MEDIUM — everyone says they'll write blog content but most don't.
+**Competition**: MEDIUM — most businesses plan to write blog content but don't.
 **Target pages**: Blog posts (each keyword = one post).
-**Volume**: Medium to High. Low direct conversion but high brand awareness.
+**Volume**: Medium to High. Low direct conversion but builds long-term authority.
 
-These build the topical authority that makes Tier 1 and 2 rankings easier over time.
-A site that answers "how much does junk removal cost" well will eventually rank for "junk removal Dallas."
+A site that thoroughly answers the research questions in a category will eventually
+rank for the transactional terms too.
 
 Format patterns:
 - `how much does [service] cost`
-- `[service] vs [alternative]` (junk removal vs dumpster rental)
-- `what can [service company] take`
-- `how to [handle situation]` (clean out a hoarder house, dispose of old appliances)
-- `best way to [task] in [city]`
-- `[service] [city] guide`
+- `[service] vs [alternative]`
+- `how to [handle situation]`
+- `how to choose a [service] company`
 - `is [service] worth it`
+- `[service] guide [year]`
 
 ---
 
 ## How to build the keyword list in practice
 
-1. **Start with Tier 1** — list the core service + city combinations. These are usually obvious.
+1. **Start with Tier 1** — core service + city combinations. Usually obvious from the intake.
 
-2. **Seed Tier 2 from testimonials** — read every testimonial on the site. Every neighborhood name mentioned = a Tier 2 keyword candidate. Client said "I'm in Bishop Arts"? That's `/locations/bishop-arts/` and "junk removal Bishop Arts."
+2. **Seed Tier 2 from the live site** — read every testimonial on the site. Every neighborhood
+   name mentioned = a Tier 2 keyword candidate. Cross-reference with GBP service area if visible.
 
-3. **Build Tier 3 from the service list** — for every service offered, ask: what would someone type when they have that specific item to remove or situation to handle? Be literal.
+3. **Build Tier 3 from what customers actually need** — for every service offered, ask: what
+   specific situation would make someone search for this right now? Think about the moment
+   the problem becomes urgent. That urgency is your Tier 3 keyword.
 
-4. **Build Tier 4 from the FAQ and competitor blogs** — what questions do competitors answer? What's already on the client's FAQ page? What would a first-time buyer need to know?
+4. **Build Tier 4 from competitor blogs and FAQ pages** — what questions do competitors answer?
+   What's on the client's FAQ page? What would a first-time buyer need answered before
+   picking up the phone or submitting a form?
 
-5. **Check for competitor comparison terms** — especially for B2B: "[Client] vs [Market Leader]" captures buyers actively evaluating. Worth a blog post or landing page.
+5. **Check for competitor comparison terms** — especially for B2B: `[Client] vs [Market Leader]`
+   captures buyers actively evaluating. Worth a dedicated landing page.
 
 ---
 
 ## Keyword documentation format
 
-For each keyword document:
-
 | Keyword | Tier | Intent | Difficulty | Target Page |
 |---------|------|--------|-----------|-------------|
-| junk removal Dallas | 1 | Transactional | HIGH | Homepage |
-| junk removal Oak Lawn | 2 | Transactional | LOW | /locations/oak-lawn/ |
-| same day junk removal Dallas | 3 | Transactional | MEDIUM | Homepage / Service |
-| how much does junk removal cost | 4 | Informational | MEDIUM | Blog post |
+| [service] [city] | 1 | Transactional | HIGH | Homepage |
+| [service] [neighborhood] | 2 | Transactional | LOW | /locations/[neighborhood]/ |
+| emergency [service] [city] | 3 | Transactional | MEDIUM | Service page |
+| how much does [service] cost | 4 | Informational | MEDIUM | Blog post |
 
 Difficulty ratings are relative estimates (LOW / MEDIUM / HIGH), not tool-based scores.
-These are based on: observed competitor presence, page quality, domain authority of ranking sites.
+Based on: observed competitor presence, page quality, domain authority of ranking sites.
 
 ---
 
 ## Notes on "near me" keywords
 
 `[service] near me` always goes in Tier 1 regardless of client.
-It's the highest-volume local intent query and is driven by:
-- Google Business Profile proximity and reviews (not just the website)
+It's the highest-volume local intent query, primarily driven by:
+- Google Business Profile proximity and review volume (not just the website)
 - Mobile search behavior
 
-Recommendation: always pair keyword strategy with GBP optimization advice.
-A site ranking #1 for "junk removal Dallas" loses to a GBP with 200 5-star reviews in the map pack.
+Always pair keyword strategy with GBP optimization recommendations.
+A strong organic ranking can still lose to a GBP with high review volume in the map pack.
+Both matter — neither replaces the other.

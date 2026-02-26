@@ -22,8 +22,8 @@ Flag FAIL items in red in deliverables. WARN items in amber.
 
 | Check | Pass Condition | Common Fail |
 |-------|---------------|-------------|
-| Homepage title includes primary keyword | "Valet Trash Service" / "Junk Removal Dallas" in title | Brand name only: "Big Junk \| We Haul Big Junk" |
-| All titles unique | No two pages share a title | Service page = homepage title |
+| Homepage title includes primary keyword | Primary service + city in title | Brand name only with no keyword |
+| All titles unique | No two pages share a title | Service page title = homepage title |
 | Title includes location | City or region in title for local businesses | No location modifier |
 | Title length | 50-60 characters | Under 30 (too thin) or over 70 (truncated) |
 | Format | Keyword — Location \| Brand | Brand first, keyword buried |
@@ -52,7 +52,7 @@ Flag FAIL items in red in deliverables. WARN items in amber.
 | Check | Pass Condition | Common Fail |
 |-------|---------------|-------------|
 | Single H1 per page | Exactly one H1 | Two H1s on homepage |
-| H1 contains keyword | Primary keyword in H1 | "WE ARE BIG JUNK" — no keyword |
+| H1 contains keyword | Primary keyword in H1 | H1 is a brand tagline with zero keyword signal |
 | Logical H2/H3 nesting | H2s for sections, H3s for subsections | H3s used before H2s, or all headings same level |
 | No heading skips | H1 → H2 → H3, not H1 → H3 | Jumping levels |
 
@@ -60,14 +60,27 @@ Flag FAIL items in red in deliverables. WARN items in amber.
 
 ## 5. Schema Markup
 
+Run a two-part schema audit for every site:
+
+**Part 1 — What exists (and is it useful?)**
+Open page source or use a schema validator. List every schema type found. For each:
+- What type is it?
+- Is it complete or skeleton-only?
+- Is it accurate (real phone, real address, real hours)?
+- Verdict: STRONG / WEAK / BROKEN
+
+**Part 2 — What's missing or weak (prioritized)**
+Only flag HIGH and MEDIUM priority gaps. For each HIGH priority item, generate the fix.
+
 | Schema Type | When Required | Priority |
 |-------------|---------------|---------|
-| LocalBusiness | Every local business site | Critical |
-| FAQPage | Any page with FAQ section | High (enables rich results) |
-| Service | Each service page | High |
-| Organization | Homepage | Medium |
-| BreadcrumbList | Any page 2+ levels deep | Medium |
-| Review / AggregateRating | When testimonials exist | High (enables star ratings in SERP) |
+| LocalBusiness | Every local business site | CRITICAL |
+| FAQPage | Any page with FAQ section | HIGH — enables rich results |
+| Service | Each service page | HIGH |
+| Review / AggregateRating | When testimonials exist | HIGH — enables star ratings in SERP |
+| Organization | Homepage | MEDIUM |
+| BreadcrumbList | Any page 2+ levels deep | MEDIUM |
+| Person | Named founder with documented expertise | MEDIUM — E-E-A-T signal |
 
 **LocalBusiness minimum required fields:**
 ```json
@@ -135,7 +148,24 @@ Flag FAIL items in red in deliverables. WARN items in amber.
 
 ---
 
-## 9. Images
+## 9. Mobile & Page Experience
+
+| Check | Pass Condition | Common Fail |
+|-------|---------------|-------------|
+| Mobile-responsive | Layout renders correctly on 375px viewport | Fixed-width layout breaks on mobile |
+| Tap targets | Buttons and links at least 44px tall | Tiny links impossible to tap accurately |
+| Text readable without zoom | Base font size 16px or larger | 12px body text requiring pinch-zoom |
+| No horizontal scroll | Content fits viewport width | Elements overflow causing side-scroll |
+| LCP (Largest Contentful Paint) | Under 2.5s | Hero image or font blocking render |
+| CLS (Cumulative Layout Shift) | Score under 0.1 | Images without dimensions, late-loading fonts |
+| INP (Interaction to Next Paint) | Under 200ms | Heavy JS blocking interaction response |
+
+> Check Core Web Vitals in Google Search Console if the site has enough traffic data.
+> For new sites use PageSpeed Insights (pagespeed.web.dev) as a proxy.
+
+---
+
+## 10. Images
 
 | Check | Pass Condition | Common Fail |
 |-------|---------------|-------------|
@@ -143,27 +173,37 @@ Flag FAIL items in red in deliverables. WARN items in amber.
 | Format | WebP or AVIF | Unoptimized JPG/PNG |
 | Lazy loading | `loading="lazy"` on below-fold images | All images load immediately |
 | File size | Under 200KB for most images | Multi-MB images |
-| Real photos | Actual job/team/location photos | Unsplash stock (trust killer for local service) |
+| Real photos | Actual job/team/location photos | Generic stock photos (trust killer for local service) |
 
 ---
 
-## 10. Contact Info & Placeholders
+## 11. Social & Open Graph Meta
+
+| Check | Pass Condition | Common Fail |
+|-------|---------------|-------------|
+| og:title | Set explicitly, keyword-relevant | Missing or defaults to page title |
+| og:description | Set explicitly with CTA | Missing or same as meta description |
+| og:image | 1200×630px image set | Missing — social shares show blank card |
+| og:url | Canonical URL set | Missing |
+| twitter:card | `summary_large_image` set | Missing — Twitter/X shows small card |
+
+---
+
+## 12. Contact Info & Placeholders
 
 This section trips up new sites most often. Always check:
 
 | Check | Pass Condition | Common Fail |
 |-------|---------------|-------------|
-| Phone number real | Not 555-xxxx, not placeholder tel: href | `tel:+15551234567` in HTML |
-| Tel: href matches display | The number shown = the number dialed | Display: 877-222-4266, href: +1234567890 |
-| Email real | Not hello@[domain].com that nobody checks | Placeholder or wrong domain |
-| Address real | Real street address, not "123 Main St" | Placeholder address |
+| Phone number real | Not 555-xxxx, not placeholder tel: href | Placeholder number in HTML |
+| Tel: href matches display | The number shown = the number dialed | Display and href are different numbers |
+| Email real | Active inbox, correct domain | Placeholder or unmonitored address |
+| Address real | Real street address | "123 Main St" placeholder |
 | Business hours | Accurate hours listed | No hours or "TBD" |
 
 ---
 
 ## Quick reference: what FAIL means in a proposal
-
-Use this framing in deliverables:
 
 - **FAIL** = This issue is actively hurting you right now. Fix before launch or fix immediately.
 - **WARN** = This is a missed opportunity. Not breaking, but leaving ranking and conversion on the table.

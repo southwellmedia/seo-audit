@@ -2,7 +2,7 @@
 name: seo-audit
 description: >
   Run a full SEO audit and competitive analysis for a client website, producing
-  a professional PDF proposal and infographic highlights PNG. Use this skill
+  a professional PDF proposal. Use this skill
   whenever a user mentions "SEO audit", "audit this site", "competitive analysis
   for [client]", "SEO for [URL]", "how is [client] doing on SEO", or asks to
   analyze a client's online presence, keyword strategy, or search visibility.
@@ -10,14 +10,14 @@ description: >
   or "what's wrong with this site from an SEO standpoint." This skill covers
   the full workflow: live site recon, brand color extraction, competitor research,
   keyword categorization, technical audit, content strategy, quick wins, and
-  deliverable generation (PDF + infographic PNG). Built by Southwell Media.
+  deliverable generation (PDF).
 ---
 
-# SEO Audit Skill — Southwell Media Methodology
+# SEO Audit Skill
 
 A systematic local-service SEO audit workflow for producing client-ready proposals.
-Covers both **B2C single-market** (e.g. junk removal, HVAC, roofing) and
-**B2B multi-state** (e.g. valet trash, facilities management) business models.
+Covers both **B2C single-market** (consumer-facing, defined geographic area) and
+**B2B multi-state** (contract-based, multi-region, sells to businesses) models.
 
 ---
 
@@ -27,6 +27,11 @@ Run this intake before any research, recon, or analysis. If information is alrea
 clear from context, skip that question — don't ask what you already know.
 
 **Do not proceed past Step 0 until you have: URL, city, and industry at minimum.**
+
+**Agency name** — used on the cover page and closing section of the PDF.
+Check memory for the user's company name first. If not known, ask:
+"What's your agency or company name? This will appear on the cover page and closing."
+Store this as `agency_name` for use throughout the deliverable.
 
 ---
 
@@ -43,8 +48,8 @@ clear from context, skip that question — don't ask what you already know.
 **3. Industry / service**
 "What service do they provide?"
 → Used for: business model classification, competitor research, keyword tiers
-→ ⚠️ Do not assume from the URL — confirm. "junk removal" ≠ "valet trash"
-   even if both involve hauling.
+→ ⚠️ Do not assume from the URL — confirm. Similar-sounding services can have
+   completely different business models and competitive landscapes.
 
 ---
 
@@ -60,8 +65,7 @@ clear from context, skip that question — don't ask what you already know.
 Any areas they're known for or want to target?"
 → Used for: Tier 2 keyword list, location page roadmap, testimonial seeding
 → If they don't know: pull from testimonials during recon (Step 1) and
-   come back to confirm — "I found mentions of Oak Lawn, Deep Ellum, and
-   Uptown in your testimonials — should we target these as neighborhood pages?"
+   come back to confirm: "I found [neighborhood names] in your testimonials — should we target these as location pages?"
 
 **6. Geographic scope**
 "Is this just [city], or do they serve a wider region — multiple cities,
@@ -71,13 +75,12 @@ the whole metro, or multiple states?"
 
 | Answer | Classification | Location page scope |
 |--------|---------------|-------------------|
-| One city / metro | B2C Local (likely) | 5-12 neighborhood pages |
+| One city / metro | B2C Local (likely) | Neighborhood + suburb pages |
 | Multi-city, one state | B2C Regional | City pages + neighborhoods |
 | Multi-state | B2B Multi-State (likely) | One page per major market |
 
 **7. Service radius (B2C only)**
-If B2C: "How far out do they travel? Do they serve suburbs like [Plano, Frisco,
-Irving] or just the core city?"
+If B2C: "How far out do they travel? Do they serve surrounding suburbs or just the core city?"
 → Used for: extending Tier 2 keywords to adjacent suburbs, additional location pages
 → Suburbs are often less competitive than the city center — high-value targets
 
@@ -181,15 +184,37 @@ JSON.stringify(colors, null, 2);
 ```
 
 Record: primary color, secondary color, accent color, background, text color.
-These are required for the infographic deliverable.
+These are required for the PDF deliverable.
 
 ### 1c. What to document from recon
+
+Capture structured data for every site you visit — client and competitors.
+
+**Business identity:**
+- Business name (confirm against URL — don't assume)
+- Address (real or placeholder?)
+- Phone number (check tel: href matches displayed number)
+- Email address
+- Services offered (list exactly what's on the site)
+- Cities / areas served (stated or implied)
+- Key selling points (what do they lead with?)
+
+**Site structure:**
 - All live pages (URL + title)
 - Navigation structure
-- Contact info accuracy (phone, email, address — flag placeholders)
-- Copyright year
+- Whether service pages are real URLs or homepage anchor links
+- Copyright year (outdated = trust signal problem)
+
+**Content & trust signals:**
+- Real job/team photos or stock?
+- Testimonials — do they cite locations, names, specifics?
 - Any CTAs that link to `#` (dead links)
 - Stat counters or dynamic elements that may not be rendering
+
+**For competitor sites specifically:**
+- What content gaps exist? What questions does this site fail to answer?
+- What would a buyer need to know before calling that isn't addressed here?
+- Where is their SEO clearly weak (thin pages, no schema, no blog)?
 
 ---
 
@@ -251,21 +276,11 @@ Run through every item in `references/technical-checklist.md`.
 
 Rate each item: **PASS** / **WARN** / **FAIL**
 
-Categories to cover:
-1. Page structure & completeness
-2. Title tags & meta descriptions
-3. Heading hierarchy (H1/H2/H3)
-4. Schema markup (LocalBusiness, FAQPage, Service, Review)
-5. Internal linking & navigation
-6. JavaScript / dynamic content risks
-7. Infrastructure (sitemap.xml, robots.txt, canonicals, redirects)
-8. Images (alt text, format, lazy loading)
-
 ---
 
 ## Step 5: Separate hard blockers from quick wins
 
-This is a critical Southwell distinction — don't mix these.
+Keep these strictly separate in the deliverable:
 
 **Hard blockers** = site should NOT go live until resolved:
 - Placeholder contact info (555 numbers, fake addresses)
@@ -274,14 +289,10 @@ This is a critical Southwell distinction — don't mix these.
 - Staging domain not blocked from indexing
 - Legal pages missing (Privacy Policy, Terms)
 
-**Quick wins** = high-impact, low-effort improvements ranked by impact ÷ effort:
-- Title tag and H1 rewrites (1 hr)
-- Meta descriptions (2 hrs)
-- Schema markup — LocalBusiness + FAQPage (2-3 hrs)
-- Sitemap + robots.txt (1 hr)
-- 301 redirects from old URLs (1 hr)
-- Service page builds (days)
-- Location page builds (days)
+**Quick wins** = high-impact, low-effort improvements ranked by impact ÷ effort.
+Common examples: title tag rewrites, meta descriptions, schema markup, sitemap fixes,
+301 redirects, service page builds, location page builds.
+Estimate time for each based on what you actually find — don't use preset estimates.
 
 Always flag blockers in RED in the deliverable. Quick wins in numbered priority order.
 
@@ -295,7 +306,7 @@ Two outputs:
 - Core pages (homepage, about, contact, quote/request)
 - Service pages (one per service)
 - Location pages (one per market — real pages, not anchor links)
-- Audience landing pages (property managers, contractors, HOAs, etc.)
+- Audience landing pages (relevant audience segments for the business model)
 - Blog
 
 **Top 10 blog posts** — ranked by search opportunity:
@@ -308,29 +319,38 @@ Two outputs:
 ## Step 7: Strategic opportunities
 
 Identify 3 specific angles where this client can outmaneuver competitors.
-These should be genuinely unique to this business — not generic SEO advice.
+These must be grounded in what you actually found during research — not generic SEO advice.
+
+**The core question for each opportunity:**
+What are competitors' sites missing? What content gaps exist across the competitive set?
+What does a buyer need before they'll pick up the phone that nobody in this market is
+providing well? That gap is the opportunity.
 
 Good examples:
-- "No competitor has neighborhood-level pages despite testimonials citing those areas"
-- "Market leader has 1.0-star reviews — own the reliability messaging angle"
-- "Only player in this market without published pricing — transparency is a differentiator"
+- "No competitor has neighborhood-level location pages despite clear demand signals in testimonials"
+- "Competitors rank well but have poor review scores — reliability and trust messaging is uncontested in this market"
+- "Nobody in this market publishes pricing — a transparent pricing guide would own that search intent"
+- "Competitors' service pages don't explain the process — buyers can't visualize what happens after they call"
 
 Bad examples (too generic, don't use):
 - "Create great content"
 - "Build more backlinks"
 - "Improve site speed"
 
+Each opportunity should name the specific gap found, why it matters for this market,
+and what the client should build or publish to own it."
+
 ---
 
 ## Step 8: Generate deliverables
 
-Two deliverables every time:
+One deliverable per audit:
 
-### 8a. Full PDF audit report
-See `references/deliverables.md` for PDF structure and ReportLab implementation.
+### Full PDF audit report
+See `references/deliverables.md` for requirements and creative guidance.
 
 Sections (in order):
-1. Cover page (client name, brand colors, "Prepared by Southwell Media")
+1. Cover page (client name, brand colors, "Prepared by [agency_name]")
 2. Table of contents
 3. Executive summary with stat callout bar
 4. Business overview & site analysis
@@ -340,17 +360,7 @@ Sections (in order):
 8. Content strategy (page roadmap + blog post list)
 9. Quick wins ranked list
 10. Strategic opportunities
-
-### 8b. Infographic highlights PNG
-See `references/deliverables.md` for PIL canvas implementation.
-
-Uses canvas-design skill philosophy: HAUL MANIFEST / DEMOLITION DISPATCH aesthetic.
-- Black background, brand colors as primary accents
-- BigShoulders font for headers, IBMPlexMono for data
-- Sections: stat bar, critical blockers, technical audit grid,
-  competitor landscape, keyword targets, 3 strategic opportunities, quick wins
-
-Use the brand colors extracted in Step 1b. Do not use generic orange/orange2.
+11. Closing / agency positioning
 
 ---
 
@@ -358,10 +368,9 @@ Use the brand colors extracted in Step 1b. Do not use generic orange/orange2.
 
 ```
 [ClientName]_SEO_Audit.pdf
-[ClientName]_SEO_Infographic.png
 ```
 
-Both go to `/mnt/user-data/outputs/`.
+Goes to `/mnt/user-data/outputs/`.
 
 ---
 
@@ -371,5 +380,5 @@ Both go to `/mnt/user-data/outputs/`.
 - Never recommend "build backlinks" without specifics
 - Always quantify effort in hours or days
 - Always note when a finding is a blocker vs. an improvement
-- Southwell Media positioning: we execute the technical work — the audit is the pitch
-- The audit closes with Southwell's capability to implement, not a vague "good luck"
+- Agency positioning: we execute the technical work — the audit is the pitch
+- The audit closes with [agency_name]'s capability to implement, not a vague "good luck"

@@ -57,7 +57,7 @@ seo-audit/
 
 - Claude with computer use enabled (for browser recon and brand color extraction)
 - Python 3 with `reportlab` (`pip install reportlab`)
-- Canvas fonts from the [canvas-design skill] at `/mnt/skills/examples/canvas-design/canvas-fonts/`
+- Canvas fonts from the [canvas-design skill](https://github.com/southwellmedia/canvas-design) at `/mnt/skills/examples/canvas-design/canvas-fonts/`
 
 ---
 
@@ -77,8 +77,8 @@ The skill automatically branches based on client type:
 
 | Model | When | Examples |
 |-------|------|---------|
-| B2C Local | Single market, consumer-facing, on-demand | Junk removal, HVAC, roofing, pool service |
-| B2B Multi-State | Multi-region, sells to businesses, contract-based | Valet trash, commercial cleaning, facilities management |
+| B2C Local | Single market, consumer-facing, on-demand | Trades, home services, professional services |
+| B2B Multi-State | Multi-region, sells to businesses, contract-based | Commercial services, facilities management, property amenities |
 
 Classification happens before any research — getting this wrong invalidates the competitive analysis.
 
@@ -92,7 +92,7 @@ Classification happens before any research — getting this wrong invalidates th
 
 **Strategic opportunities are specific** — The 3 opportunities section is grounded in actual competitive gaps found during research, not generic SEO advice. "Create great content" is never an output.
 
-**The audit is the pitch** — Southwell Media uses these as client proposals. The closing section positions Southwell to execute the implementation, not just deliver the report.
+**The audit is the pitch** — the closing section positions your agency to execute the implementation, not just deliver the report. The PDF uses your agency name on the cover and closing, pulled from your Claude memory or asked during intake.
 
 ---
 
@@ -100,4 +100,4 @@ Classification happens before any research — getting this wrong invalidates th
 
 MIT — use freely, attribution appreciated.
 
-Built and maintained by [Southwell Media](https://southwellmedia.com) — a Dallas-based digital agency.
+Built and maintained by [Southwell Media](https://southwellmedia.com) — a Dallas-based digital agency delivering custom websites in 14-21 days for local service businesses.
