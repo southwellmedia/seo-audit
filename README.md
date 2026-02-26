@@ -2,16 +2,15 @@
 
 > A Claude skill for running systematic SEO audits and competitive analyses for local service businesses — built by [Southwell Media](https://southwellmedia.com).
 
-This skill gives Claude a repeatable methodology for auditing client websites and producing client-ready proposals: a full PDF report plus an infographic highlights PNG.
+This skill gives Claude a repeatable methodology for auditing client websites and producing client-ready PDF proposals.
 
 ---
 
 ## What it produces
 
-Two deliverables per audit:
+One deliverable per audit:
 
 - **`[Client]_SEO_Audit.pdf`** — Full proposal with competitive analysis, keyword research, technical audit, content strategy, and prioritized quick wins
-- **`[Client]_SEO_Infographic.png`** — One-page highlights infographic in the client's brand colors for sharing or internal distribution
 
 ## What it covers
 
@@ -49,7 +48,7 @@ seo-audit/
     ├── b2b-multistate.md           # B2B multi-state methodology
     ├── technical-checklist.md      # Full technical SEO checklist
     ├── keywords.md                 # 4-tier keyword framework
-    └── deliverables.md             # PDF and infographic specs + code patterns
+    └── deliverables.md             # PDF specs + code patterns
 ```
 
 ---
@@ -77,9 +76,9 @@ Classification happens before any research — getting this wrong invalidates th
 
 ## Key methodology notes
 
-**Hard blockers vs. quick wins** — The skill separates issues that prevent launch (placeholder phone numbers, dead CTAs, unblocked staging domains) from optimization opportunities. These are visually distinct in both deliverables.
+**Hard blockers vs. quick wins** — The skill separates issues that prevent launch (placeholder phone numbers, dead CTAs, unblocked staging domains) from optimization opportunities. These are visually distinct in the deliverable.
 
-**Brand color extraction** — Brand colors are pulled directly from the live site's CSS using browser JS, not guessed. The infographic always matches the client's actual palette.
+**Brand color extraction** — Brand colors are pulled directly from the live site's CSS using browser JS, not guessed. The PDF always matches the client's actual palette.
 
 **Strategic opportunities are specific** — The 3 opportunities section is grounded in actual competitive gaps found during research, not generic SEO advice. "Create great content" is never an output.
 
