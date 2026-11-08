@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "client_name": "Bluebonnet Plumbing Co.",
+    "url": "https://bluebonnetplumbing.example.com",
+    "date": "November 2026",
+    "agency_name": "Example Agency",
+    "agency_url": "https://agency.example.com",
+    "business_model": "B2C Local",
+    "market": "Dallas, TX",
+    "launch_status": "live"
+  },
+  "brand": {
+    "primary": "#1F4E8C",
+    "secondary": "#F2A541",
+    "accent": "#2E8B57",
+    "source": "extracted from live CSS"
+  },
+  "executive_summary": {
+    "market_context": "Residential plumbing in Dallas is crowded at the top: two national franchises and a handful of large local operators hold the map pack for the core terms. Below that tier, almost nobody has built neighborhood-level pages, published pricing, or earned mentions in the local 'best of' lists that AI answers draw on.",
+    "verdict": "The site looks credible but is invisible for anything beyond its own name: two hard blockers need fixing this week, and the neighborhood and pricing gaps in this market are wide open.",
+    "key_points": [
+      "Two hard blockers, including a placeholder phone number in the click-to-call link",
+      "All five services live as homepage anchors, not pages Google can rank",
+      "No competitor has neighborhood pages for Lakewood, Lake Highlands or Preston Hollow — the areas named most in the client's own reviews",
+      "Not cited in any of the 6 AI answers checked; two competitors are cited in four of them"
+    ]
+  },
+  "business_overview": {
+    "summary": "Family-owned residential plumbing company serving Dallas and its northeast suburbs since 2009. Leads with same-day service and upfront pricing, though neither appears in a crawlable form on the site.",
+    "services": ["Drain cleaning", "Water heater repair & install", "Leak detection", "Sewer line repair", "Repiping"],
+    "areas_served": ["Dallas", "Lakewood", "Lake Highlands", "Preston Hollow", "Richardson", "Garland"],
+    "site_status": "Live on Webflow; 4 indexable pages; last meaningful update appears to be 2024.",
+    "issues": [
+      {"issue": "Click-to-call link dials a placeholder number", "severity": "blocker", "detail": "Displayed number is correct; the tel: href is (214) 555-0100."},
+      {"issue": "Services exist only as homepage anchors", "severity": "high", "detail": "No /services/ URLs exist for any of the five services."},
+      {"issue": "Testimonials have no names or locations", "severity": "medium", "detail": "Twelve testimonials signed only with initials."}
+    ]
+  },
+  "competitors": [
+    {"name": "Trinity Rooter Pros", "url": "https://trinityrooter.example.com", "hq": "Dallas, TX", "scale": "Local, 3 trucks", "differentiator": "24/7 emergency positioning.", "strengths": "Strong GBP: 640 reviews, posts weekly.", "weaknesses": "Single-page site; no service or location pages.", "reviews": {"count": 640, "rating": 4.8, "source": "Google"}},
+    {"name": "Metroplex Pipe & Drain", "url": "https://metroplexpipe.example.com", "hq": "Plano, TX", "scale": "Regional, DFW-wide", "differentiator": "Financing and membership plans.", "strengths": "40+ templated city pages; active blog.", "weaknesses": "City pages are near-duplicates; no pricing.", "reviews": {"count": 1210, "rating": 4.6, "source": "Google"}},
+    {"name": "National Drain Franchise (Dallas)", "url": "https://nationaldrain.example.com/dallas", "hq": "National franchise", "scale": "National", "differentiator": "Brand recognition, guarantees.", "strengths": "Domain authority; ranks #1 organically for 'plumber dallas'.", "weaknesses": "Dallas page is a template; 3.9 rating with repeated pricing complaints.", "reviews": {"count": 380, "rating": 3.9, "source": "Google"}},
+    {"name": "Lakewood Plumbing & Gas", "url": "https://lakewoodpg.example.com", "hq": "Dallas, TX", "scale": "Local", "differentiator": "Neighborhood brand for East Dallas.", "strengths": "Owns the 'Lakewood' name; good local reviews.", "weaknesses": "No content beyond the homepage; no schema.", "reviews": {"count": 210, "rating": 4.9, "source": "Google"}}
+  ],
+  "feature_matrix": {
+    "features": ["Service pages", "Location pages", "Published pricing", "Active blog", "Local schema", "Cited by AI"],
+    "rows": [
+      {"name": "Bluebonnet Plumbing", "is_client": true, "values": ["no", "no", "no", "no", "partial", "no"]},
+      {"name": "Trinity Rooter Pros", "values": ["no", "no", "no", "no", "yes", "yes"]},
+      {"name": "Metroplex Pipe & Drain", "values": ["yes", "partial", "no", "yes", "yes", "yes"]},
+      {"name": "National Drain Franchise", "values": ["yes", "partial", "partial", "yes", "yes", "partial"]},
+      {"name": "Lakewood Plumbing & Gas", "values": ["no", "no", "no", "no", "no", "no"]}
+    ]
+  },
+  "keywords": [
+    {"keyword": "plumber dallas", "tier": 1, "intent": "Transactional", "difficulty": "HIGH", "target_page": "Homepage", "ai_overview": false},
+    {"keyword": "plumber near me", "tier": 1, "intent": "Transactional", "difficulty": "HIGH", "target_page": "Homepage + GBP", "ai_overview": false},
+    {"keyword": "drain cleaning dallas", "tier": 1, "intent": "Transactional", "difficulty": "MEDIUM", "target_page": "/services/drain-cleaning/", "ai_overview": false},
+    {"keyword": "plumber lakewood dallas", "tier": 2, "intent": "Transactional", "difficulty": "LOW", "target_page": "/locations/lakewood/", "ai_overview": false},
+    {"keyword": "plumber lake highlands", "tier": 2, "intent": "Transactional", "difficulty": "LOW", "target_page": "/locations/lake-highlands/", "ai_overview": false},
+    {"keyword": "plumber richardson tx", "tier": 2, "intent": "Transactional", "difficulty": "MEDIUM", "target_page": "/locations/richardson/", "ai_overview": false},
+    {"keyword": "same day water heater replacement dallas", "tier": 3, "intent": "Transactional", "difficulty": "LOW", "target_page": "/services/water-heaters/", "ai_overview": false},
+    {"keyword": "slab leak detection dallas", "tier": 3, "intent": "Transactional", "difficulty": "MEDIUM", "target_page": "/services/leak-detection/", "ai_overview": true, "source": "Search Console: 410 impressions, avg. position 14"},
+    {"keyword": "how much does it cost to repipe a house in texas", "tier": 4, "intent": "Informational", "difficulty": "MEDIUM", "target_page": "Blog", "ai_overview": true},
+    {"keyword": "tankless vs tank water heater", "tier": 4, "intent": "Informational", "difficulty": "HIGH", "target_page": "Blog", "ai_overview": true}
+  ],
+  "technical": [
+    {"category": "Page Structure", "check": "Dedicated service pages", "rating": "FAIL", "finding": "All five services are anchors on the homepage.", "basis": "observed"},
+    {"category": "Page Structure", "check": "Location pages", "rating": "FAIL", "finding": "None; service area listed in the footer only.", "basis": "observed"},
+    {"category": "Titles & Meta", "check": "Homepage title", "rating": "WARN", "finding": "'Home | Bluebonnet' — no service or city.", "basis": "observed"},
+    {"category": "Structured Data", "check": "LocalBusiness schema", "rating": "WARN", "finding": "Present but missing geo, hours and sameAs.", "basis": "measured"},
+    {"category": "Infrastructure", "check": "robots.txt & sitemap", "rating": "PASS", "finding": "Both present; sitemap lists all 4 pages.", "basis": "observed"},
+    {"category": "Page Experience", "check": "Core Web Vitals (mobile)", "rating": "WARN", "finding": "LCP 3.1s from an uncompressed 2.4MB hero image.", "basis": "measured"},
+    {"category": "Contact Info", "check": "Tel: href matches display", "rating": "FAIL", "finding": "Display (214) 555-0100 placeholder in href.", "basis": "observed", "blocker": true},
+    {"category": "AI Search Visibility", "check": "AI crawler access", "rating": "FAIL", "finding": "Cloudflare 'block AI bots' is on, blocking OAI-SearchBot and PerplexityBot.", "basis": "observed"}
+  ],
+  "core_web_vitals": [
+    {"url": "/", "strategy": "mobile", "source": "lab", "lcp_s": 3.1, "cls": 0.04, "inp_ms": null, "tbt_ms": 180}
+  ],
+  "ai_visibility": {
+    "summary": "AI answers for Dallas plumbing questions lean on Yelp, a local magazine's 'best plumbers' list and Reddit threads. The client appears in none of them; two competitors appear in all three.",
+    "crawlers": [
+      {"agent": "Googlebot", "status": "allowed"},
+      {"agent": "OAI-SearchBot", "status": "blocked", "note": "Cloudflare bot setting"},
+      {"agent": "PerplexityBot", "status": "blocked", "note": "Cloudflare bot setting"},
+      {"agent": "GPTBot", "status": "blocked", "note": "Training only — client's choice"}
+    ],
+    "citations": [
+      {"query": "best plumber in dallas", "surface": "Google AI Overview", "client_cited": false, "cited": "Trinity Rooter Pros, Metroplex Pipe & Drain"},
+      {"query": "best plumber in dallas", "surface": "ChatGPT", "client_cited": false, "cited": "Trinity Rooter Pros, National Drain Franchise"},
+      {"query": "slab leak repair lakewood dallas", "surface": "Perplexity", "client_cited": false, "cited": "Lakewood Plumbing & Gas"}
+    ]
+  },
+  "blockers": [
+    {"title": "Fix the click-to-call number", "detail": "Every mobile tap on the phone number dials a placeholder.", "fix": "Change the tel: href to the real number in the header and footer components."},
+    {"title": "Unblock AI search crawlers", "detail": "The client can't appear in ChatGPT or Perplexity search results while these are blocked.", "fix": "Allow OAI-SearchBot, PerplexityBot and Claude-SearchBot in Cloudflare bot settings; training bots can stay blocked."}
+  ],
+  "quick_wins": [
+    {"title": "Rewrite homepage and page titles", "detail": "Add service + Dallas to every title.", "impact": "High", "effort_hours": 1},
+    {"title": "Complete LocalBusiness schema", "detail": "Add geo, hours, sameAs and the Plumber subtype.", "impact": "Medium", "effort_hours": 1.5},
+    {"title": "Compress the hero image", "detail": "2.4MB JPG → WebP under 200KB; should bring LCP under 2.5s.", "impact": "Medium", "effort_hours": 0.5},
+    {"title": "Build five service pages", "detail": "One page per service with process, pricing range and FAQ.", "impact": "High", "effort_hours": 16}
+  ],
+  "content_strategy": {
+    "page_roadmap": [
+      {"page": "Drain Cleaning", "url": "/services/drain-cleaning/", "type": "Service", "status": "missing", "priority": "High"},
+      {"page": "Water Heaters", "url": "/services/water-heaters/", "type": "Service", "status": "missing", "priority": "High"},
+      {"page": "Lakewood", "url": "/locations/lakewood/", "type": "Location", "status": "missing", "priority": "High"},
+      {"page": "Pricing", "url": "/pricing/", "type": "Core", "status": "missing", "priority": "Medium"},
+      {"page": "About", "url": "/about/", "type": "Core", "status": "weak", "priority": "Medium"}
+    ],
+    "blog_posts": [
+      {"title": "How Much Does It Cost to Repipe a House in Dallas? 2027 Pricing", "keyword": "cost to repipe a house dallas", "tier": 4, "purpose": "Cost guide"},
+      {"title": "Tankless vs. Tank Water Heaters for North Texas Homes", "keyword": "tankless vs tank water heater", "tier": 4, "purpose": "Comparison"},
+      {"title": "Slab Leaks in East Dallas: Signs, Causes and What Repair Costs", "keyword": "slab leak detection dallas", "tier": 3, "purpose": "Local"}
+    ]
+  },
+  "opportunities": [
+    {"title": "Own the neighborhoods your customers already name", "gap": "No competitor has a real page for Lakewood, Lake Highlands or Preston Hollow.", "why": "These three areas appear in 9 of the client's 12 testimonials and have low-difficulty search terms.", "action": "Build three neighborhood pages seeded with real jobs, photos and named reviews from each area."},
+    {"title": "Be the plumber that publishes prices", "gap": "None of the four competitors publish pricing; the franchise's reviews repeatedly complain about surprise quotes.", "why": "Cost questions dominate Tier 4 and AI answers have no local price source to cite.", "action": "Publish a pricing page with ranges for the five core jobs, and a repipe cost guide."},
+    {"title": "Get into the sources AI answers cite", "gap": "AI answers for Dallas plumbing cite Yelp, one local 'best of' list and Reddit — the client is in none.", "why": "Competitors in those sources are named in most AI answers checked.", "action": "Claim and complete Yelp, pitch the local list's next edition, unblock AI search crawlers."}
+  ],
+  "closing": {
+    "headline": "We can start this week",
+    "body": "Everything in this audit is work we do every day. The blockers take a day; the service and neighborhood pages take about three weeks.",
+    "cta": "Reply to schedule a 30-minute walkthrough of this report.",
+    "contact": "hello@agency.example.com"
+  }
+}

@@ -76,6 +76,11 @@ Format patterns:
 A site that thoroughly answers the research questions in a category will eventually
 rank for the transactional terms too.
 
+AI Overviews now answer many of these queries directly, so expect fewer clicks per ranking
+than a few years ago. The value shifts toward being the source the answer cites: posts with
+specific local facts, real prices, and first-hand experience that a generic answer can't
+supply. Check whether an AI Overview appears for each Tier 4 term and note it in the table.
+
 Format patterns:
 - `how much does [service] cost`
 - `[service] vs [alternative]`
@@ -116,7 +121,18 @@ Format patterns:
 | how much does [service] cost | 4 | Informational | MEDIUM | Blog post |
 
 Difficulty ratings are relative estimates (LOW / MEDIUM / HIGH), not tool-based scores.
-Based on: observed competitor presence, page quality, domain authority of ranking sites.
+Base them on what you actually see when you search the term: who ranks (national brands,
+directories, local operators), how strong those pages are, and whether a map pack or AI
+Overview takes the top of the page. Label them as estimates in the PDF.
+
+**Use real data when you have it:**
+- If the client shares Search Console access or an export, add the queries they already
+  get impressions for — those are the cheapest wins (often position 8–20 terms one fix
+  away from page one). Mark these rows `measured` with impressions and average position.
+- If the user has a keyword tool (Ahrefs, Semrush, Google Keyword Planner) connected or
+  pastes an export, use its volume and difficulty and name the source.
+- Otherwise don't invent search volumes. "Relative volume: High / Medium / Low" is honest;
+  a made-up "1,900/mo" isn't.
 
 ---
 

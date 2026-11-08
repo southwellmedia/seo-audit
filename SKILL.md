@@ -1,384 +1,235 @@
 ---
 name: seo-audit
 description: >
-  Run a full SEO audit and competitive analysis for a client website, producing
-  a professional PDF proposal. Use this skill
-  whenever a user mentions "SEO audit", "audit this site", "competitive analysis
-  for [client]", "SEO for [URL]", "how is [client] doing on SEO", or asks to
-  analyze a client's online presence, keyword strategy, or search visibility.
-  Also trigger when a user says things like "we're about to launch this site"
-  or "what's wrong with this site from an SEO standpoint." This skill covers
-  the full workflow: live site recon, brand color extraction, competitor research,
-  keyword categorization, technical audit, content strategy, quick wins, and
-  deliverable generation (PDF).
+  Run a full SEO audit and competitive analysis of a client website and produce a
+  client-ready PDF proposal. Use when the user asks for an "SEO audit", to "audit this
+  site", for "competitive analysis for [client]", "SEO for [URL]", "how is [client] doing
+  on SEO", "what's wrong with this site from an SEO standpoint", or a pre-launch SEO check,
+  or wants a client's search visibility, keyword strategy, local presence or AI search
+  visibility analyzed. Covers live site recon, brand colors, competitors, keywords,
+  technical and AI-visibility audit, content strategy, quick wins and the PDF.
 ---
 
 # SEO Audit Skill
 
-A systematic local-service SEO audit workflow for producing client-ready proposals.
-Covers both **B2C single-market** (consumer-facing, defined geographic area) and
-**B2B multi-state** (contract-based, multi-region, sells to businesses) models.
+A systematic SEO audit for service businesses, producing a proposal an agency can send
+cold. Three business-model branches: **B2C local**, **multi-location B2C**, and **B2B**
+(single- or multi-market).
+
+The work happens in this order — intake, recon, competitors, keywords, technical audit,
+AI visibility, blockers and quick wins, content strategy, opportunities — and everything
+found is written to `findings.json`, which a bundled script renders into the PDF.
+
+Paths below like `references/…` and `scripts/…` are relative to this skill's folder.
 
 ---
 
-## Step 0: Client intake — ask before doing anything
+## Step 0: Intake — get the URL, infer the rest, confirm once
 
-Run this intake before any research, recon, or analysis. If information is already
-clear from context, skip that question — don't ask what you already know.
+**The only thing you must have to start is the URL.** If the user didn't give one, ask.
 
-**Do not proceed past Step 0 until you have: URL, city, and industry at minimum.**
+Then open the site and infer as much as you can before asking anything else: business name,
+services, city/market, neighborhoods or cities named in testimonials and service-area copy,
+whether it's live or a staging/pre-launch build, and whether it sells to consumers or businesses.
 
-**Agency name** — used on the cover page and closing section of the PDF.
-Check memory for the user's company name first. If not known, ask:
-"What's your agency or company name? This will appear on the cover page and closing."
-Store this as `agency_name` for use throughout the deliverable.
+Then confirm in **one round** of questions (a multiple-choice question tool if you have one,
+otherwise one short message). Pre-fill each with what you found so the user can just confirm:
 
----
+1. **Business & service** — "This looks like [business], a [service] company. Right?"
+   Don't assume the service from the URL; similar-sounding services can have very different
+   competitive landscapes.
+2. **Market & scope** — "[City], serving [areas found]. Wider than that?" (one metro / several
+   cities / several states). This decides the branch and the location-page plan.
+3. **Locations** — one location, several physical locations, or service-area only?
+4. **Anything you know already** — known competitors to include, a previous domain (for
+   redirect checks), Google Business Profile status, Search Console access or a keyword-tool
+   export, and for B2B the priority markets and the buyer role.
 
-### Core questions (always ask if not provided)
+Skip any question the conversation already answers. If the user isn't around to answer,
+go with your inferences and say which ones you made when you deliver the report.
 
-**1. URL**
-"What's the URL of the site we're auditing?"
-→ Used for: live recon, brand color extraction, technical audit
+**Agency name** — for the cover and closing. Use what you know about the user (memory,
+profile, earlier messages). Ask only if you genuinely don't know.
 
-**2. Business name**
-"What's the business name?" (or infer from URL if obvious)
-→ Used for: deliverable filenames, report cover, competitive framing
-
-**3. Industry / service**
-"What service do they provide?"
-→ Used for: business model classification, competitor research, keyword tiers
-→ ⚠️ Do not assume from the URL — confirm. Similar-sounding services can have
-   completely different business models and competitive landscapes.
-
----
-
-### Location questions (always ask — these shape the entire audit)
-
-**4. Primary city / market**
-"What city or metro is their primary market?"
-→ Used for: Tier 1 keywords (`[service] [city]`), competitor research scope,
-   Google Business Profile advice, LocalBusiness schema coordinates
-
-**5. Neighborhoods or districts served**
-"Do they serve specific neighborhoods or areas within that city?
-Any areas they're known for or want to target?"
-→ Used for: Tier 2 keyword list, location page roadmap, testimonial seeding
-→ If they don't know: pull from testimonials during recon (Step 1) and
-   come back to confirm: "I found [neighborhood names] in your testimonials — should we target these as location pages?"
-
-**6. Geographic scope**
-"Is this just [city], or do they serve a wider region — multiple cities,
-the whole metro, or multiple states?"
-→ Used for: business model classification (B2C local vs. B2B multi-state),
-   number of location pages needed, keyword volume expectations
-
-| Answer | Classification | Location page scope |
-|--------|---------------|-------------------|
-| One city / metro | B2C Local (likely) | Neighborhood + suburb pages |
-| Multi-city, one state | B2C Regional | City pages + neighborhoods |
-| Multi-state | B2B Multi-State (likely) | One page per major market |
-
-**7. Service radius (B2C only)**
-If B2C: "How far out do they travel? Do they serve surrounding suburbs or just the core city?"
-→ Used for: extending Tier 2 keywords to adjacent suburbs, additional location pages
-→ Suburbs are often less competitive than the city center — high-value targets
-
----
-
-### Conditional questions (only ask if relevant)
-
-**8. Launch status** — ask if unclear from context
-"Is this site currently live, or is this a pre-launch / rebuild situation?"
-→ If pre-launch: staging domain blocking becomes a hard blocker
-→ If rebuild: ask for old URL to check redirect needs
-
-**9. Old domain / previous site** — ask if it's a rebuild or rebrand
-"Was there a previous website or domain? What was the URL?"
-→ Used for: 301 redirect audit, link equity preservation, old URL 404 checks
-
-**10. Known competitors** — ask to save research time
-"Are there any competitors you're already aware of — either ones you worry
-about or ones you want to beat?"
-→ If yes: start research from those, fill gaps to 6-8 total
-→ If no: identify from scratch via web search
-
-**11. Priority markets (B2B multi-state only)**
-"Which of your service states or cities are highest priority for new business?"
-→ Used for: location page build order, which markets to research competitively first
-
-**12. Existing Google Business Profile**
-"Do they have a Google Business Profile set up? Do you know how many reviews
-they have?"
-→ Used for: GBP recommendations section, review generation strategy,
-   "near me" keyword advice
-
----
-
-### What changes based on location answers
-
-This is why location questions matter — each answer has downstream consequences:
-
-| Location input | What it changes |
-|---------------|----------------|
-| Primary city | Tier 1 keywords, competitor search scope, LocalBusiness schema |
-| Neighborhoods named | Tier 2 keyword list, location page count, testimonial cross-reference |
-| Suburbs / service radius | Additional Tier 2 keywords, extended location page roadmap |
-| Multi-state scope | Switches to B2B branch, one page-per-market strategy |
-| No neighborhoods known | Flag during recon — pull from testimonials, return to confirm |
-
----
-
-### After intake: classify the business model
-
-Based on answers, classify into one of two branches:
+### Classify the business model
 
 | Branch | Signals | Read next |
 |--------|---------|-----------|
-| **B2C Local** | Single city/metro, consumer-facing, on-demand | `references/b2c-local.md` |
-| **B2B Multi-State** | Multi-region, sells to property managers or businesses, contract-based | `references/b2b-multistate.md` |
+| **B2C Local** | Consumers, one metro, one location or service-area business | `references/b2c-local.md` |
+| **Multi-location B2C** | Consumers, several physical locations with their own addresses | `references/multi-location.md` + `references/b2c-local.md` |
+| **B2B** | Sells to businesses/organizations on contract, one market or many | `references/b2b.md` |
 
-> ⚠️ When in doubt, confirm with the user before branching.
-> The entire competitive analysis framework differs between the two.
+If the signals conflict, ask — the competitive framework differs between branches.
+
+### What the location answers change
+
+| Input | Changes |
+|-------|---------|
+| Primary city | Tier 1 keywords, competitor search scope, LocalBusiness schema |
+| Neighborhoods / suburbs | Tier 2 keywords, location page roadmap, testimonial cross-check |
+| Several locations | Per-location pages and GBP scorecard (multi-location branch) |
+| Several markets (B2B) | One genuine page per market, build order by priority market |
 
 ---
 
 ## Step 1: Live site recon
 
-Before any analysis, audit what's actually built — not what the brief says exists.
+Audit what's actually built, not what the brief says. Use whichever browser tool this
+environment has; fall back to fetching pages if there's no browser (and note that you
+couldn't check rendering).
 
-### 1a. Browser navigation (use Claude in Chrome tools)
-- Navigate to the live URL
-- Screenshot the homepage, scroll through all sections
-- Note every page in the nav — don't trust what the client told you
-- Check footer for sitemap-style links — often reveals pages nav misses
+### 1a. Walk the site
+- Homepage top to bottom; every page in the nav and the footer
+- `robots.txt` and `sitemap.xml`
+- View-source (raw HTML) for the homepage and one service page — compare with the rendered
+  page to spot JavaScript-only content
 
-### 1b. Brand color extraction (always do this — needed for deliverables)
-Use `javascript_tool` to extract exact brand colors from the live CSS:
+### 1b. Brand colors
+Run `scripts/extract_brand_colors.js` in the page (any tool that evaluates JavaScript).
+It returns declared theme colors, brand-like CSS variables, colors ranked by frequency per
+role (buttons, links, headings, header), and the logo URL. Pick primary / secondary / accent
+from that — usually the button background and CSS tokens agree. If you can't run JavaScript,
+look at the logo and buttons and choose; record `brand.source` either way.
 
-```javascript
-// Resolve oklch/hsl to hex via canvas
-function resolveColor(colorStr) {
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 1;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = colorStr;
-  ctx.fillRect(0, 0, 1, 1);
-  const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-  return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
-}
+### 1c. Document
+**Business identity:** name, address (real or placeholder?), phone (does the `tel:` href
+match the display?), email, services listed, areas served, what they lead with.
 
-// Get computed colors from key elements
-const brandEls = document.querySelectorAll('[class*="brand"], [class*="primary"], [class*="accent"], h1, button, a');
-const colors = {};
-brandEls.forEach(el => {
-  const cs = getComputedStyle(el);
-  ['color','backgroundColor'].forEach(prop => {
-    const val = cs[prop];
-    if (val && !val.includes('rgba(0, 0, 0, 0)') && !val.includes('255, 255, 255')) {
-      colors[el.className?.toString().slice(0,50)] = { [prop]: resolveColor(val) };
-    }
-  });
-});
-JSON.stringify(colors, null, 2);
-```
+**Structure:** every live page (URL + title), nav structure, whether services are real
+URLs or homepage anchors, copyright year.
 
-Record: primary color, secondary color, accent color, background, text color.
-These are required for the PDF deliverable.
+**Trust & content:** real photos or stock, testimonials (names? locations? dates?),
+CTAs linking to `#`, stat counters that don't render.
 
-### 1c. What to document from recon
-
-Capture structured data for every site you visit — client and competitors.
-
-**Business identity:**
-- Business name (confirm against URL — don't assume)
-- Address (real or placeholder?)
-- Phone number (check tel: href matches displayed number)
-- Email address
-- Services offered (list exactly what's on the site)
-- Cities / areas served (stated or implied)
-- Key selling points (what do they lead with?)
-
-**Site structure:**
-- All live pages (URL + title)
-- Navigation structure
-- Whether service pages are real URLs or homepage anchor links
-- Copyright year (outdated = trust signal problem)
-
-**Content & trust signals:**
-- Real job/team photos or stock?
-- Testimonials — do they cite locations, names, specifics?
-- Any CTAs that link to `#` (dead links)
-- Stat counters or dynamic elements that may not be rendering
-
-**For competitor sites specifically:**
-- What content gaps exist? What questions does this site fail to answer?
-- What would a buyer need to know before calling that isn't addressed here?
-- Where is their SEO clearly weak (thin pages, no schema, no blog)?
+**For competitors too:** content gaps — what does a buyer need to know before calling that
+this site doesn't answer? Where is their SEO clearly weak?
 
 ---
 
 ## Step 2: Competitive research
 
-See the relevant reference file for industry-specific competitor lists and what to look for.
+Find **6–8 direct competitors**: 2–3 national/franchise players (the ceiling) and 3–5
+local or regional operators (the real fight). Start from any the user named.
 
-General framework (applies to both branches):
+Per competitor: name, URL, HQ, scale, differentiator, SEO strengths, SEO weaknesses, and
+**current** review count and rating with the source. Pull the numbers; never assume them.
 
-**Find 6-8 direct competitors.** Mix of:
-- 2-3 national/franchise players (understand the ceiling)
-- 3-4 local/regional operators (understand the real fight)
+Build a **feature matrix**: competitors as rows, 5–7 SEO features as columns. Choose
+features that matter in *this* market — e.g. service pages, location pages, published
+pricing, active blog, LocalBusiness schema, GBP review volume, cited in AI answers. Keep
+labels to one or two words.
 
-**For each competitor, document:**
-- Name, URL, headquarters, scale
-- Core differentiators (1-2 sentences)
-- SEO strengths (content depth, location pages, reviews, schema)
-- SEO weaknesses (generic content, no pricing, thin local signals)
-- Review volume and average rating
-
-**Build a feature matrix** — columns are competitors, rows are key SEO features:
-- Location/city pages
-- Blog/content marketing
-- Pricing transparency
-- Schema markup
-- Review volume
-- App or tech differentiator
-- Eco/social angle
+The branch reference file has what to look for per model.
 
 ---
 
 ## Step 3: Keyword research
 
-Organize into 4 tiers. See `references/keywords.md` for full framework.
+Four tiers, 40–50 keywords total. Full method in `references/keywords.md`.
 
-**Location inputs from Step 0 directly feed this step:**
-- Primary city → Tier 1 (`[service] [city]`)
-- Neighborhoods named → Tier 2 starting list
-- Suburbs / service radius → extend Tier 2 beyond city center
-- Testimonials (from Step 1 recon) → additional Tier 2 seeds if neighborhoods weren't known upfront
+| Tier | Intent | Conversion | Built from |
+|------|--------|------------|------------|
+| 1 Primary Core | Mixed | Medium | Service + primary city, "near me" |
+| 2 Local / Neighborhood | Transactional | High | Neighborhoods, suburbs, locations, markets |
+| 3 Long-Tail High-Intent | Transactional | Very high | Specific urgent situations, buyer types |
+| 4 Informational | Informational | Low | Buyer questions, competitor blogs and FAQs |
 
-| Tier | Intent | Volume | Conversion | Location input used |
-|------|--------|--------|------------|-------------------|
-| Primary Core | Mixed | High | Medium | Primary city |
-| Local/Neighborhood | Transactional | Medium | High | Named neighborhoods + suburbs |
-| Long-Tail High-Intent | Transactional | Low | Very High | Primary city + specific situations |
-| Informational/Blog | Informational | High | Low | No location needed |
-
-Target 40-50 keywords total across all tiers. Document for each:
-- Search intent
-- Relative difficulty (LOW / MEDIUM / HIGH)
-- Target page (homepage, service page, location page, blog)
+For each: intent, difficulty (LOW / MEDIUM / HIGH — an estimate unless you have tool data),
+target page, and whether an AI Overview appears. Use Search Console or keyword-tool data when
+the user can provide it, and say where numbers came from. Never invent search volumes.
 
 ---
 
 ## Step 4: Technical SEO audit
 
-Run through every item in `references/technical-checklist.md`.
+Work through `references/technical-checklist.md` — all 13 sections. Rate each item
+PASS / WARN / FAIL / N/A and record the basis: **measured**, **observed**, or **estimated**.
 
-Rate each item: **PASS** / **WARN** / **FAIL**
+Measure what can be measured:
+- **Core Web Vitals** — PageSpeed Insights API for the homepage and one key page (mobile);
+  use field data when it exists, lab data otherwise, and label which
+- **Indexation** — `site:domain.com` count and odd URLs (or Search Console if available)
+- **Schema** — Rich Results Test and the Schema.org validator
+
+Don't recommend tactics that no longer work: FAQ rich results ended in May 2026, HowTo
+rich results in 2023, and Google doesn't show stars for a business's own reviews.
+Section 5 of the checklist has the details.
 
 ---
 
-## Step 5: Separate hard blockers from quick wins
+## Step 5: AI search visibility
 
-Keep these strictly separate in the deliverable:
+Checklist section 13. Three parts:
 
-**Hard blockers** = site should NOT go live until resolved:
-- Placeholder contact info (555 numbers, fake addresses)
+1. **Crawler access** — robots.txt and bot-protection settings for search/answer bots
+   (OAI-SearchBot, PerplexityBot, Bingbot, Claude-SearchBot) vs. training-only bots.
+2. **Citation spot-check** — 5–8 Tier 1/Tier 3 queries in whichever AI surfaces you can
+   reach. Who gets named, and which sources (Yelp, Reddit, local lists) do the answers lean on?
+3. **Entity consistency** — NAP across GBP, Bing Places, Apple Business Connect and directories.
+
+Report what you observed as a dated snapshot. If you can't reach an AI surface, say so
+rather than guessing.
+
+---
+
+## Step 6: Separate hard blockers from quick wins
+
+**Hard blockers** — the site shouldn't launch (or must be fixed this week if live):
+- Placeholder contact info (555 numbers, fake addresses, `tel:` mismatch)
 - Dead CTAs (links to `#`)
-- Stat counters showing 0 with no real data
-- Staging domain not blocked from indexing
-- Legal pages missing (Privacy Policy, Terms)
+- Stat counters stuck at 0
+- Staging domain indexable, or `noindex`/`Disallow: /` left on production
+- Missing legal pages (Privacy Policy, Terms)
+- Search/answer bots blocked unintentionally
 
-**Quick wins** = high-impact, low-effort improvements ranked by impact ÷ effort.
-Common examples: title tag rewrites, meta descriptions, schema markup, sitemap fixes,
-301 redirects, service page builds, location page builds.
-Estimate time for each based on what you actually find — don't use preset estimates.
-
-Always flag blockers in RED in the deliverable. Quick wins in numbered priority order.
+**Quick wins** — high impact, low effort, ranked by impact ÷ effort. Estimate effort in hours
+from what you actually found, not preset numbers. Blockers always come first in the PDF.
 
 ---
 
-## Step 6: Content strategy
+## Step 7: Content strategy
 
-Two outputs:
-
-**Page structure roadmap** — what pages should exist:
-- Core pages (homepage, about, contact, quote/request)
-- Service pages (one per service)
-- Location pages (one per market — real pages, not anchor links)
-- Audience landing pages (relevant audience segments for the business model)
-- Blog
-
-**Top 10 blog posts** — ranked by search opportunity:
-- Must target a specific keyword tier
-- Must serve a content purpose (pillar, comparison, FAQ, local)
-- Must fit the client's actual expertise
+- **Page roadmap** — core pages, one page per service, location/market pages, audience or
+  vertical pages, blog. Mark each exists / weak / missing with a priority.
+- **Top 10 blog posts** — ranked by opportunity; each targets a keyword tier, serves a clear
+  purpose (cost guide, comparison, local, FAQ, process), and fits what the client actually knows.
 
 ---
 
-## Step 7: Strategic opportunities
+## Step 8: Strategic opportunities
 
-Identify 3 specific angles where this client can outmaneuver competitors.
-These must be grounded in what you actually found during research — not generic SEO advice.
+Exactly **3** angles where this client can beat this competitive set, each grounded in
+something you found. For each: the specific gap, why it matters in this market, and what to build.
 
-**The core question for each opportunity:**
-What are competitors' sites missing? What content gaps exist across the competitive set?
-What does a buyer need before they'll pick up the phone that nobody in this market is
-providing well? That gap is the opportunity.
+The question behind each: what does a buyer need before they'll pick up the phone that
+nobody in this market provides well?
 
-Good examples:
-- "No competitor has neighborhood-level location pages despite clear demand signals in testimonials"
-- "Competitors rank well but have poor review scores — reliability and trust messaging is uncontested in this market"
-- "Nobody in this market publishes pricing — a transparent pricing guide would own that search intent"
-- "Competitors' service pages don't explain the process — buyers can't visualize what happens after they call"
+Good: "No competitor has neighborhood pages, yet 9 of 12 testimonials name three neighborhoods."
+"Nobody publishes pricing, and the market leader's reviews keep complaining about surprise quotes."
+"AI answers here cite Yelp and one local 'best of' list — the client is in neither."
 
-Bad examples (too generic, don't use):
-- "Create great content"
-- "Build more backlinks"
-- "Improve site speed"
-
-Each opportunity should name the specific gap found, why it matters for this market,
-and what the client should build or publish to own it."
+Not acceptable: "Create great content." "Build more backlinks." "Improve site speed."
 
 ---
 
-## Step 8: Generate deliverables
+## Step 9: Build and check the PDF
 
-One deliverable per audit:
+Full spec in `references/deliverables.md`.
 
-### Full PDF audit report
-See `references/deliverables.md` for requirements and creative guidance.
-
-Sections (in order):
-1. Cover page (client name, brand colors, "Prepared by [agency_name]")
-2. Table of contents
-3. Executive summary with stat callout bar
-4. Business overview & site analysis
-5. Competitor analysis with feature matrix
-6. Keyword research tables by tier
-7. Technical SEO audit with PASS/WARN/FAIL ratings
-8. Content strategy (page roadmap + blog post list)
-9. Quick wins ranked list
-10. Strategic opportunities
-11. Closing / agency positioning
+1. Write everything to `findings.json` in the shape of `assets/findings.example.json`.
+2. Check that the numbers in your prose match the data (blocker count, competitor count).
+3. Render: `python3 scripts/build_report.py findings.json -o [ClientName]_SEO_Audit.pdf`
+4. Check: `python3 scripts/check_pdf.py [ClientName]_SEO_Audit.pdf`, then look at the contact
+   sheet and key pages. Fix and re-render until it's clean.
+5. Deliver the PDF with the environment's file-sharing tool, with a 2–3 sentence summary.
 
 ---
 
-## Deliverable naming convention
+## Tone and framing
 
-```
-[ClientName]_SEO_Audit.pdf
-```
-
-Goes to `/mnt/user-data/outputs/`.
-
----
-
-## Notes on tone and framing
-
-- Never write "create great content" as a recommendation
-- Never recommend "build backlinks" without specifics
-- Always quantify effort in hours or days
-- Always note when a finding is a blocker vs. an improvement
-- Agency positioning: we execute the technical work — the audit is the pitch
-- The audit closes with [agency_name]'s capability to implement, not a vague "good luck"
+- Never "create great content" or "build backlinks" without specifics
+- Quantify effort in hours or days
+- Every finding is labeled blocker vs. improvement, and measured vs. estimated
+- Call out what's working — clients need to know that too
+- Verify competitor claims before using them; ratings and pages change
+- The audit is the pitch: it closes with [agency_name] ready to do the work, not "good luck"
