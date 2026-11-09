@@ -79,7 +79,8 @@ rank for the transactional terms too.
 AI Overviews now answer many of these queries directly, so expect fewer clicks per ranking
 than a few years ago. The value shifts toward being the source the answer cites: posts with
 specific local facts, real prices, and first-hand experience that a generic answer can't
-supply. Check whether an AI Overview appears for each Tier 4 term and note it in the table.
+supply. Check whether an AI Overview appears for each Tier 4 term and note it in the table
+(`ai_overview`: true / false, or null when you couldn't check — the PDF shows "?" for those).
 
 Format patterns:
 - `how much does [service] cost`

@@ -49,7 +49,9 @@ Skip any question the conversation already answers. If the user isn't around to 
 go with your inferences and say which ones you made when you deliver the report.
 
 **Agency name** — for the cover and closing. Use what you know about the user (memory,
-profile, earlier messages). Ask only if you genuinely don't know.
+profile, earlier messages). If you don't know it, add it to the confirmation round. Never
+invent one: if the user can't be asked, leave `meta.agency_name` empty (the PDF then omits
+"Prepared by") and mention it when you deliver.
 
 ### Classify the business model
 
@@ -218,8 +220,8 @@ Full spec in `references/deliverables.md`.
 
 1. Write everything to `findings.json` in the shape of `assets/findings.example.json`.
 2. Check that the numbers in your prose match the data (blocker count, competitor count).
-3. Render: `python3 scripts/build_report.py findings.json -o [ClientName]_SEO_Audit.pdf`
-4. Check: `python3 scripts/check_pdf.py [ClientName]_SEO_Audit.pdf`, then look at the contact
+3. Render: `python3 <skill-dir>/scripts/build_report.py findings.json -o [ClientName]_SEO_Audit.pdf`
+4. Check: `python3 <skill-dir>/scripts/check_pdf.py [ClientName]_SEO_Audit.pdf`, then look at the contact
    sheet and key pages. Fix and re-render until it's clean.
 5. Deliver the PDF with the environment's file-sharing tool, with a 2–3 sentence summary.
 

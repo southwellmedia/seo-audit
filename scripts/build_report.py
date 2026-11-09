@@ -205,6 +205,14 @@ def badge_cell(label, fg, bg, F):
     return Paragraph(clean(label), st), colors.HexColor(bg)
 
 
+def tier_of(k):
+    """Keyword tier as an int; 0 when missing or not a number (validate() warns)."""
+    try:
+        return int(k.get("tier", 0))
+    except (TypeError, ValueError):
+        return 0
+
+
 def fmt_hours(h):
     if h is None or h == "":
         return "—"
@@ -269,12 +277,15 @@ class AuditDoc(BaseDocTemplate):
         y = PAGE_H - band_h - 0.9 * inch
         c.setFont(F["bold"], 8.5)
         c.setFillColor(MUTED)
-        c.drawString(MARGIN, y, "PREPARED BY")
-        c.drawString(MARGIN + CONTENT_W / 2, y, "DATE")
+        date_x = MARGIN + CONTENT_W / 2 if m.get("agency_name") else MARGIN
+        if m.get("agency_name"):
+            c.drawString(MARGIN, y, "PREPARED BY")
+        c.drawString(date_x, y, "DATE")
         c.setFillColor(INK)
         c.setFont(F["serif"], 20)
-        c.drawString(MARGIN, y - 26, m.get("agency_name", ""))
-        c.drawString(MARGIN + CONTENT_W / 2, y - 26, m.get("date", ""))
+        if m.get("agency_name"):
+            c.drawString(MARGIN, y - 26, m["agency_name"])
+        c.drawString(date_x, y - 26, m.get("date", ""))
         if m.get("business_model"):
             c.setFont(F["bold"], 8.5)
             c.setFillColor(MUTED)
@@ -514,10 +525,11 @@ class Builder:
             return []
         out = self.section("Keyword Research",
                            "Difficulty is a relative estimate from the live results page unless a "
-                           "source is shown. 'AI' marks terms where a Google AI Overview appeared.")
+                           "source is shown. 'AI' marks terms where a Google AI Overview appeared; "
+                           "'?' means it couldn't be checked.")
         diff_col = {"LOW": "#1E7A46", "MEDIUM": "#9A5B00", "HIGH": "#B42318"}
         for tier in (1, 2, 3, 4):
-            tk = [k for k in kws if int(k.get("tier", 0)) == tier]
+            tk = [k for k in kws if tier_of(k) == tier]
             if not tk:
                 continue
             rows = []
@@ -529,7 +541,7 @@ class Builder:
                 rows.append([Paragraph(kw, S["cell_b"]), k.get("intent", ""),
                              Paragraph(f"<font color='{diff_col.get(d, '#1B1F24')}'><b>{clean(d)}</b></font>", S["cell"]),
                              k.get("target_page", ""),
-                             "AI" if k.get("ai_overview") else ""])
+                             {True: "AI", False: "", None: "?"}.get(k.get("ai_overview"), "?")])
             heading = Paragraph(clean(TIER_NAMES[tier]), S["h3"])
             table = self.table(["Keyword", "Intent", "Difficulty", "Target page", "AI"], rows,
                                [0.42, 0.14, 0.12, 0.26, 0.06])
@@ -706,12 +718,14 @@ class Builder:
             out.append(Paragraph(clean(c["headline"]), S["verdict"]))
         if c.get("body"):
             out.append(P_(c["body"], S["lead"]))
-        lines = [f"<b>{clean(m.get('agency_name', ''))}</b>"]
+        lines = [f"<b>{clean(m['agency_name'])}</b>"] if m.get("agency_name") else []
         for k in ("cta", "contact"):
             if c.get(k):
                 lines.append(clean(c[k]))
         if m.get("agency_url"):
             lines.append(clean(m["agency_url"].replace("https://", "")))
+        if not lines:
+            return out
         box = Table([[Paragraph("<br/>".join(lines), ParagraphStyle(
             "cb", parent=S["body"], textColor=colors.HexColor(pal.on_band), fontSize=10.5, leading=16))]],
             colWidths=[CONTENT_W])
@@ -723,7 +737,7 @@ class Builder:
 
 
 # ---------------------------------------------------------------- validation & main
-REQUIRED = ["meta.client_name", "meta.agency_name", "meta.date", "executive_summary.verdict"]
+REQUIRED = ["meta.client_name", "meta.date", "executive_summary.verdict"]
 RECOMMENDED = ["competitors", "keywords", "technical", "quick_wins", "opportunities"]
 
 
@@ -735,6 +749,8 @@ def validate(data):
             cur = cur.get(part) if isinstance(cur, dict) else None
         if not cur:
             errors.append(f"missing required field: {path}")
+    if not (data.get("meta") or {}).get("agency_name"):
+        warnings.append("meta.agency_name is empty: the cover and closing will omit 'Prepared by'")
     for key in RECOMMENDED:
         if not data.get(key):
             warnings.append(f"section '{key}' is empty and will be skipped")
@@ -742,10 +758,10 @@ def validate(data):
         r = str(t.get("rating", "")).upper()
         if r not in RATING_STYLE:
             warnings.append(f"technical[{i}] rating '{t.get('rating')}' should be PASS/WARN/FAIL/N/A")
-        if t.get("basis") and t["basis"].split(" ")[0] not in ("measured", "observed", "estimated"):
+        if t.get("basis") and str(t["basis"]).split(" ")[0] not in ("measured", "observed", "estimated"):
             warnings.append(f"technical[{i}] basis should start with measured/observed/estimated")
     for i, k in enumerate(data.get("keywords", [])):
-        if int(k.get("tier", 0)) not in (1, 2, 3, 4):
+        if tier_of(k) not in (1, 2, 3, 4):
             warnings.append(f"keywords[{i}] tier must be 1-4")
     if len(data.get("opportunities", [])) not in (0, 3):
         warnings.append("the methodology calls for exactly 3 strategic opportunities")
@@ -778,7 +794,15 @@ def main():
     ap.add_argument("findings", help="path to findings JSON")
     ap.add_argument("-o", "--output", help="output PDF path (default: <Client>_SEO_Audit.pdf next to the JSON)")
     args = ap.parse_args()
-    data = json.loads(Path(args.findings).read_text())
+    try:
+        data = json.loads(Path(args.findings).read_text())
+    except OSError as e:
+        sys.exit(f"error: can't read {args.findings}: {e.strerror or e}")
+    except json.JSONDecodeError as e:
+        sys.exit(f"error: {args.findings} is not valid JSON (line {e.lineno}, column {e.colno}): {e.msg}")
+    if not isinstance(data, dict):
+        sys.exit(f"error: {args.findings} must contain a JSON object at the top level, "
+                 f"not {type(data).__name__}")
     errors, warnings = validate(data)
     for w in warnings:
         print("warning:", w, file=sys.stderr)

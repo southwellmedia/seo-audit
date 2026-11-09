@@ -29,13 +29,13 @@ skipped (the script warns). Keep text tight: these are table cells and callouts,
 
 | Key | Contents |
 |-----|----------|
-| `meta` | `client_name`, `url`, `date`, `agency_name`, `agency_url`, `business_model`, `market`, `launch_status` |
+| `meta` | `client_name`, `url`, `date`, `agency_name` (optional — omitted from the cover if empty), `agency_url`, `business_model`, `market`, `launch_status` |
 | `brand` | `primary`, `secondary`, `accent` as hex, plus `source` ("extracted from live CSS" or "chosen — extraction failed") |
 | `executive_summary` | `market_context` (2–3 sentences), `verdict` (one sentence), `key_points` (3–5), optional `stats` (else auto: competitors, keywords, quick wins, blockers) |
 | `business_overview` | `summary`, `services[]`, `areas_served[]`, `site_status`, `issues[]` (`issue`, `severity`: blocker/high/medium/low, `detail`) |
 | `competitors[]` | `name`, `url`, `hq`, `scale`, `differentiator`, `strengths`, `weaknesses`, `reviews` {`count`, `rating`, `source`} |
 | `feature_matrix` | `features[]` (short labels, ≤ 2 words — columns are narrow), `rows[]` {`name`, `is_client`, `values[]`: yes/no/partial or short text} |
-| `keywords[]` | `keyword`, `tier` 1–4, `intent`, `difficulty` LOW/MEDIUM/HIGH, `target_page`, `ai_overview` bool, optional `source` (e.g. "Search Console: 410 impressions, avg. position 14") |
+| `keywords[]` | `keyword`, `tier` 1–4, `intent`, `difficulty` LOW/MEDIUM/HIGH, `target_page`, `ai_overview` true/false, or null if not checked, optional `source` (e.g. "Search Console: 410 impressions, avg. position 14") |
 | `technical[]` | `category`, `check`, `rating` PASS/WARN/FAIL/N/A, `finding`, `basis` measured/observed/estimated, optional `blocker` true |
 | `core_web_vitals[]` | `url`, `strategy`, `source` field/lab, `lcp_s`, `cls`, `inp_ms`, `tbt_ms` (null when not available) |
 | `ai_visibility` | `summary`, `crawlers[]` {`agent`, `status` allowed/blocked/partial, `note`}, `citations[]` {`query`, `surface`, `client_cited`, `cited`} |
@@ -75,8 +75,12 @@ self-contained stat bar that can't collide with surrounding text.
 
 ## Check before delivering
 
-`check_pdf.py` renders every page to PNG plus a contact sheet and flags near-empty pages,
-unfilled placeholders, raw JSON and `None`/`null` cells. It exits non-zero on a problem.
+`check_pdf.py` renders every page to PNG plus a contact sheet and flags: near-empty pages;
+common bracket placeholders (`[City]`, `[Service]`, `[Client]`, `[Neighborhood]`,
+`[Brand Name]`, `[Year]`, `[agency_name]`); curly braces (raw JSON or unfilled templates);
+TODO / TBD / lorem ipsum; and cells that are just `None`, `null`, `nan` or `undefined`.
+555 phone numbers are listed as notes to double-check, not problems. It exits non-zero on
+a problem. Other placeholder styles aren't caught — reading the pages is still required.
 
 Then **look at the contact sheet and at least the cover, executive summary and technical
 pages** with your image-reading tool. Fix anything that's off — in `findings.json` (wrong

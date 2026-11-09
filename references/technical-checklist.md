@@ -144,7 +144,7 @@ Only flag HIGH and MEDIUM gaps. For each HIGH item, write the actual JSON-LD fix
 Use the most specific `@type` that fits. Fill `sameAs` with the GBP, Yelp, BBB, Facebook,
 LinkedIn and industry-directory URLs — it ties the entity together for search engines and AI.
 Service-area businesses that hide their address on GBP should omit `streetAddress` and
-lean on `areaServed`.
+`geo` (coordinates would reveal the hidden location) and rely on `areaServed`.
 
 ---
 
@@ -187,16 +187,19 @@ Content that only appears after JS runs is invisible to them, so it can't be cit
 |-------|---------------|-------------|
 | sitemap.xml | Exists, lists only indexable 200-status URLs, submitted to GSC | Missing, or lists redirects/404s |
 | robots.txt | Exists, references sitemap, doesn't block important paths | Missing, or `Disallow: /` left over from staging |
-| Canonical tags | Every page has a self-referencing `<link rel="canonical">` | Absent — staging and production both indexed |
+| Canonical tags | Every indexable page has a self-referencing `<link rel="canonical">`; duplicates/variants point to the preferred URL | Absent — staging and production both indexed; or every page canonicals to the homepage |
 | Staging blocked | Staging domain returns noindex, auth, or redirects | Vercel/Netlify preview subdomain indexed |
 | 301 redirects | Old URLs redirect to new equivalents | Old URLs return 404 |
 | HTTPS | Full SSL, no mixed content, HTTP → HTTPS redirect | HTTP pages or mixed-content warnings |
 | www / non-www | One version, the other 301s to it | Both resolve separately |
-| Indexation | `site:domain.com` count roughly matches real page count | Far fewer (pages not indexed) or far more (junk/params indexed) |
+| Indexation | Key pages indexed (confirm per URL); no junk URLs in results | Staging, parameter, tag or old-domain URLs showing in results; key pages confirmed missing |
 
 **Indexation check:** run `site:domain.com` in Google and note the approximate count and any
 odd URLs (staging, parameters, tag pages, old domain). If the client grants Search Console
-access, use the Pages (indexing) report instead — it's authoritative; `site:` is a rough guide.
+access, use the Pages (indexing) report instead — it's authoritative. `site:` counts are
+rough and often wrong in both directions, so a low count is only a lead: check the key
+pages individually (`site:domain.com/services/drain-cleaning/` or Search Console's URL
+Inspection) before reporting anything as not indexed. Junk URLs that do show up are a real finding.
 
 ---
 
@@ -229,7 +232,9 @@ From the JSON:
   traffic for field data. Mark `measured (lab)` and note that lab INP isn't available —
   Total Blocking Time is the proxy.
 
-If the API can't be reached, say so and rate these `estimated` from what you saw.
+If the API can't be reached, mark LCP, CLS and INP **N/A — not measured** and leave the values
+null; don't estimate them by eye. You can still note visible causes (a huge hero image,
+layout jumping as fonts load) as findings in their own rows.
 
 ---
 

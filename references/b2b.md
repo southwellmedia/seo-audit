@@ -91,8 +91,18 @@ for B2B — keep them factual and fair, and verify every claim about the competi
 - Case studies locked in PDFs or gated forms — not indexable, not citable by AI
 
 ### JavaScript rendering risk
-B2B sites often use dynamic maps or state filters. Flag if the map loads via JS or the
-filter uses URL params instead of real paths. Static location pages are the fix.
+B2B sites often use dynamic maps or state filters. A JS-loaded map isn't automatically a
+problem — Google renders JavaScript. Before flagging it, check:
+- Is the market content in the rendered page, and is each market reachable through a real
+  `<a href>` link (not only a click handler)?
+- Does each market have its own URL with a self-referencing canonical? Parameter URLs
+  (`?state=texas`) can be indexed if they're linked and canonical; often they aren't.
+- **Fragment-only navigation** (`#texas`) is a separate, definite risk: fragments aren't
+  separate URLs, so those markets can never rank on their own.
+
+Flag what you confirm. Separate static location pages are the fix when markets have no
+crawlable URL of their own — and they also make the content visible to AI crawlers, which
+don't run JavaScript.
 
 ### Redirect infrastructure
 B2B clients often rebrand or rebuild. Check:

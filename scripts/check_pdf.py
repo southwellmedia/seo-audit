@@ -46,7 +46,11 @@ def main():
     out_dir = Path(args.out_dir) if args.out_dir else pdf_path.with_name(pdf_path.stem + "_pages")
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    doc = pdfium.PdfDocument(str(pdf_path))
+    try:
+        doc = pdfium.PdfDocument(str(pdf_path))
+    except (pdfium.PdfiumError, OSError) as e:
+        print(f"PROBLEM: can't open {pdf_path}: {e}")
+        sys.exit(1)
     problems, notes, thumbs = [], [], []
     for i in range(len(doc)):
         page = doc[i]
@@ -67,6 +71,10 @@ def main():
                 target = notes if pattern.startswith("555") else problems
                 target.append(f"page {n}: {why}: …{snippet.strip()}…")
                 break
+
+    if not thumbs:
+        print("PROBLEM: PDF has no pages")
+        sys.exit(1)
 
     # contact sheet: 4 across
     cols = 4

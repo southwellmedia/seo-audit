@@ -50,7 +50,10 @@ recency, page quality, GBP completeness. The weakest locations are usually the f
 ### Brand-level
 - Duplicate content across location pages (check 2–3 pages side by side)
 - Internal linking: homepage → locations hub → each location → its services
-- Closed locations: page 301s to the nearest open location, GBP marked permanently closed
+- Closed locations: if the location moved, 301 the old page to the new location's page. If it
+  simply closed, keep the page live with a clear closure notice and links to the nearest open
+  locations (or 301 to the locations hub) rather than redirecting to an unrelated location.
+  Either way, mark the GBP permanently closed (or moved)
 
 ---
 
