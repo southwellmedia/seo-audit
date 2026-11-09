@@ -1,61 +1,96 @@
 # Deliverables Reference
 
-One deliverable per audit: a full PDF proposal.
-Generated programmatically with Python ReportLab. Do NOT use pandoc, wkhtmltopdf, or any other conversion tool.
+One deliverable per audit: a PDF proposal, built in two steps.
 
-**Install before generating:**
+1. **Write `findings.json`** — every finding from the audit, structured. This is the real work
+   product: it can be re-rendered, compared against a later re-audit, or turned into a deck or doc.
+2. **Render it** with the bundled script, then check the result.
+
 ```bash
-pip install reportlab --break-system-packages -q
+pip install reportlab pypdfium2 pillow        # add --break-system-packages if pip refuses
+python3 <skill-dir>/scripts/build_report.py findings.json -o <ClientName>_SEO_Audit.pdf
+python3 <skill-dir>/scripts/check_pdf.py <ClientName>_SEO_Audit.pdf
 ```
 
----
+`<skill-dir>` is the folder this skill was loaded from (the one containing `SKILL.md`).
+Write `findings.json` and the PDF in the current working directory unless the user asked
+for another location.
 
-## PDF Audit Report
-
-**Output**: `/mnt/user-data/outputs/[ClientName]_SEO_Audit.pdf`
-
-Extract brand colors from the live site before writing any code (see SKILL.md Step 1b).
-Use those colors throughout the document as accents. If extraction fails, choose a professional
-color palette that fits the client's industry.
-
-The PDF must use a **light background** — white or near-white pages. No dark mode. Brand colors
-are used as accents (headers, rules, badges, callout bars), not as page backgrounds.
-
-The PDF should look polished enough to send to a client cold — a professional agency proposal,
-not a script output. You have full creative latitude on layout, typography, spacing, cover design,
-and visual hierarchy. Make it look good. Use your judgment.
-
-**The stat callout bar in the executive summary must be a self-contained block** — it cannot
-overlap or collide with any surrounding text. Build it as its own Table flowable with explicit
-row heights, placed after the verdict paragraph with a Spacer above and below it.
-
-Fonts are available at `/mnt/skills/examples/canvas-design/canvas-fonts/` — register any of them
-with ReportLab if they improve the result.
+Don't hand-build the PDF layout in a new script each run. If the layout needs to change,
+change `build_report.py` so every future audit gets the improvement.
 
 ---
 
-## Required sections (in order)
+## findings.json
 
-1. **Cover page** — client name, "SEO Audit & Competitive Analysis", date, "Prepared by [agency_name]"
-2. **Table of contents**
-3. **Executive summary** — market context, one-sentence verdict, 4-stat callout bar (competitors, keywords, quick wins, blockers)
-4. **Business overview & site analysis** — what they do, current site status, issue table
-5. **Competitor analysis** — 6-8 competitor profiles + feature comparison matrix
-6. **Keyword research** — 4 tiers, table per tier
-7. **Technical SEO audit** — PASS / WARN / FAIL per category, hard blockers visually distinct
-8. **Content strategy** — page roadmap + top 10 blog posts
-9. **Quick wins** — ranked by impact ÷ effort, time estimates, blockers called out
-10. **Strategic opportunities** — 3 specific opportunities, not generic advice
-11. **Closing** — [agency_name] executes the work; the audit is the pitch
+`assets/findings.example.json` is a complete, realistic example — copy its shape.
+Every section except `meta` and `executive_summary.verdict` is optional; empty sections are
+skipped (the script warns). Keep text tight: these are table cells and callouts, not essays.
+
+| Key | Contents |
+|-----|----------|
+| `meta` | `client_name`, `url`, `date`, `agency_name` (optional — omitted from the cover if empty), `agency_url`, `business_model`, `market`, `launch_status` |
+| `brand` | `primary`, `secondary`, `accent` as hex, plus `source` ("extracted from live CSS" or "chosen — extraction failed") |
+| `executive_summary` | `market_context` (2–3 sentences), `verdict` (one sentence), `key_points` (3–5), optional `stats` (else auto: competitors, keywords, quick wins, blockers) |
+| `business_overview` | `summary`, `services[]`, `areas_served[]`, `site_status`, `issues[]` (`issue`, `severity`: blocker/high/medium/low, `detail`) |
+| `competitors[]` | `name`, `url`, `hq`, `scale`, `differentiator`, `strengths`, `weaknesses`, `reviews` {`count`, `rating`, `source`} |
+| `feature_matrix` | `features[]` (short labels, ≤ 2 words — columns are narrow), `rows[]` {`name`, `is_client`, `values[]`: yes/no/partial or short text} |
+| `keywords[]` | `keyword`, `tier` 1–4, `intent`, `difficulty` LOW/MEDIUM/HIGH, `target_page`, `ai_overview` true/false, or null if not checked, optional `source` (e.g. "Search Console: 410 impressions, avg. position 14") |
+| `technical[]` | `category`, `check`, `rating` PASS/WARN/FAIL/N/A, `finding`, `basis` measured/observed/estimated, optional `blocker` true |
+| `core_web_vitals[]` | `url`, `strategy`, `source` field/lab, `lcp_s`, `cls`, `inp_ms`, `tbt_ms` (null when not available) |
+| `ai_visibility` | `summary`, `crawlers[]` {`agent`, `status` allowed/blocked/partial, `note`}, `citations[]` {`query`, `surface`, `client_cited`, `cited`} |
+| `blockers[]` | `title`, `detail`, `fix` |
+| `quick_wins[]` | `title`, `detail`, `impact` High/Medium/Low, `effort_hours` (number) — already in priority order |
+| `content_strategy` | `page_roadmap[]` {`page`, `url`, `type`, `status` exists/weak/missing, `priority`}, `blog_posts[]` {`title`, `keyword`, `tier`, `purpose`} |
+| `opportunities[]` | exactly 3: `title`, `gap`, `why`, `action` |
+| `closing` | `headline`, `body`, `cta`, `contact` |
+
+**Consistency checks before rendering** — the numbers in prose must match the data:
+the count of blockers in `key_points` or `verdict` equals `blockers[]`, competitor counts match,
+and every quick win references something actually found.
 
 ---
 
-## Output
+## What the PDF contains (in order)
 
-```python
-import shutil
-slug = client_name.replace(" ", "_")
-shutil.copy('/home/claude/audit.pdf', f'/mnt/user-data/outputs/{slug}_SEO_Audit.pdf')
-```
+1. Cover — client name on the brand color, URL and market, "Prepared by [agency_name]", date
+2. Contents
+3. Executive summary — market context, verdict, 4-stat bar, key points
+4. Business overview & site analysis — facts table, issues by severity
+5. Competitor analysis — profiles + feature matrix (client row highlighted)
+6. Keyword research — one table per tier, AI Overview flags, data sources where measured
+7. Technical SEO audit — PASS/WARN/FAIL by category, basis column, blockers marked, Core Web Vitals
+8. AI search visibility — crawler access, who AI answers cite
+9. Content strategy — page roadmap + priority blog posts
+10. Blockers & quick wins — blockers in a red block first, then ranked quick wins with effort
+11. Strategic opportunities — the 3 opportunities as gap / why / what to build
+12. Next steps — the agency executes the work; the audit is the pitch
 
-Call `present_files` with the PDF. Keep the closing message to 2-3 sentences.
+Design rules the script already enforces: light pages, brand color used for the cover band,
+table headers and accents (auto-darkened when too light to read as text, and text on the band
+flips to dark when the brand color is light), bundled Instrument Sans/Serif fonts, and a
+self-contained stat bar that can't collide with surrounding text.
+
+---
+
+## Check before delivering
+
+`check_pdf.py` renders every page to PNG plus a contact sheet and flags: near-empty pages;
+common bracket placeholders (`[City]`, `[Service]`, `[Client]`, `[Neighborhood]`,
+`[Brand Name]`, `[Year]`, `[agency_name]`); curly braces (raw JSON or unfilled templates);
+TODO / TBD / lorem ipsum; and cells that are just `None`, `null`, `nan` or `undefined`.
+555 phone numbers are listed as notes to double-check, not problems. It exits non-zero on
+a problem. Other placeholder styles aren't caught — reading the pages is still required.
+
+Then **look at the contact sheet and at least the cover, executive summary and technical
+pages** with your image-reading tool. Fix anything that's off — in `findings.json` (wrong
+counts, cells too long) or in `build_report.py` (layout) — and re-render. Don't send a PDF
+you haven't looked at.
+
+---
+
+## Delivering
+
+Hand the PDF to the user with whatever file-sharing mechanism this environment provides.
+Keep the message to 2–3 sentences: the headline finding, the number of blockers, and that
+`findings.json` is available if they want a deck, a doc, or a re-audit later.

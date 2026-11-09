@@ -70,9 +70,14 @@ are both keyword candidates and location page content seeds.
    - Claim if unclaimed
    - Complete all fields: categories, services, hours, photos, description
    - Review generation strategy — volume matters for map pack ranking
-2. **LocalBusiness schema** — name, address, phone, geo, hours, service area
-3. **Review schema** — mark up testimonials on the site
-4. **NAP consistency** — Name, Address, Phone identical across site, GBP, and directories
+2. **LocalBusiness schema** — most specific subtype, name, address, phone, geo, hours, service area, `sameAs`
+3. **NAP consistency** — Name, Address, Phone identical across site, GBP, Bing Places,
+   Apple Business Connect, Yelp, and directories. These listings also feed Copilot, Siri
+   and AI answers.
+4. **Testimonials as content, not markup** — real names, neighborhoods and job details in
+   plain HTML. Don't recommend AggregateRating markup for the business's own testimonials;
+   Google doesn't show stars for self-published reviews (see technical checklist §5).
+   Stars for local businesses come from the Google Business Profile.
 
 ### Common B2C-specific fails
 - Placeholder phone numbers (tel: href mismatch with displayed number)
@@ -168,6 +173,11 @@ that are actually true for this client and market — verified during research, 
 5. **Real photos vs. stock** — Are competitors using generic stock photography?
    If yes: real job photos are an immediate trust differentiator. Easy win.
 
-6. **Content gap** — What questions are competitors' sites failing to answer?
+6. **AI answer gap** — In the AI citation spot-check (technical checklist §13b), are the
+   cited businesses winning because of third-party mentions (local "best of" lists, Reddit,
+   Yelp) the client lacks? If yes: a targeted plan to earn those mentions is a concrete,
+   uncontested opportunity most local competitors haven't noticed.
+
+7. **Content gap** — What questions are competitors' sites failing to answer?
    Look at their service pages and blogs: what's missing? What does a buyer need to know
    before calling that nobody is explaining well? That gap is a content opportunity.
