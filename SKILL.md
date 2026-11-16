@@ -21,6 +21,8 @@ AI visibility, blockers and quick wins, content strategy, opportunities — and 
 found is written to `findings.json`, which a bundled script renders into the PDF.
 
 Paths below like `references/…` and `scripts/…` are relative to this skill's folder.
+`${CLAUDE_SKILL_DIR}` is that folder; where it isn't filled in (chat on claude.ai), run the
+scripts by their path relative to `SKILL.md`.
 
 ---
 
@@ -220,8 +222,8 @@ Full spec in `references/deliverables.md`.
 
 1. Write everything to `findings.json` in the shape of `assets/findings.example.json`.
 2. Check that the numbers in your prose match the data (blocker count, competitor count).
-3. Render: `python3 <skill-dir>/scripts/build_report.py findings.json -o [ClientName]_SEO_Audit.pdf`
-4. Check: `python3 <skill-dir>/scripts/check_pdf.py [ClientName]_SEO_Audit.pdf`, then look at the contact
+3. Render: `python3 ${CLAUDE_SKILL_DIR}/scripts/build_report.py findings.json -o [ClientName]_SEO_Audit.pdf`
+4. Check: `python3 ${CLAUDE_SKILL_DIR}/scripts/check_pdf.py [ClientName]_SEO_Audit.pdf`, then look at the contact
    sheet and key pages. Fix and re-render until it's clean.
 5. Deliver the PDF with the environment's file-sharing tool, with a 2–3 sentence summary.
 

@@ -8,11 +8,13 @@ One deliverable per audit: a PDF proposal, built in two steps.
 
 ```bash
 pip install reportlab pypdfium2 pillow        # add --break-system-packages if pip refuses
-python3 <skill-dir>/scripts/build_report.py findings.json -o <ClientName>_SEO_Audit.pdf
-python3 <skill-dir>/scripts/check_pdf.py <ClientName>_SEO_Audit.pdf
+python3 ${CLAUDE_SKILL_DIR}/scripts/build_report.py findings.json -o <ClientName>_SEO_Audit.pdf
+python3 ${CLAUDE_SKILL_DIR}/scripts/check_pdf.py <ClientName>_SEO_Audit.pdf
 ```
 
-`<skill-dir>` is the folder this skill was loaded from (the one containing `SKILL.md`).
+`${CLAUDE_SKILL_DIR}` is the folder this skill was loaded from (the one containing `SKILL.md`).
+Where it isn't filled in, use the skill folder's path (in chat on claude.ai, the scripts sit at
+`scripts/` next to `SKILL.md`).
 Write `findings.json` and the PDF in the current working directory unless the user asked
 for another location.
 

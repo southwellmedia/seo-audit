@@ -26,6 +26,52 @@ This skill gives Claude a repeatable methodology for auditing a client website a
 
 ---
 
+## Installation
+
+### Claude app (web and desktop): no command needed
+
+1. Download **[`seo-audit.zip`](https://github.com/southwellmedia/seo-audit/releases/latest/download/seo-audit.zip)** from the latest release.
+2. In Claude, open **[Customize → Skills](https://claude.ai/customize/skills)**, click **+**, choose **Upload a skill**, and select the zip.
+3. Turn the skill on. Code execution must be enabled for your account (the skill runs Python to build the PDF).
+
+Upload the zip as you downloaded it, without unzipping it first.
+
+> **Don't use GitHub's green "Code → Download ZIP" button.** That zip unpacks to a folder called `seo-audit-main` and includes repo files, so Claude rejects it. The skill's folder name has to be exactly `seo-audit`, matching the `name` in `SKILL.md`. Use the release zip above.
+
+On Team and Enterprise plans you can share the uploaded skill with colleagues, or publish it to your organization, from the same Skills page.
+
+### Claude Code
+
+Clone straight into your skills folder. The folder name has to be `seo-audit`:
+
+```bash
+git clone https://github.com/southwellmedia/seo-audit.git ~/.claude/skills/seo-audit
+```
+
+Use a project's `.claude/skills/seo-audit` instead to scope it to one project. Update later with `git -C ~/.claude/skills/seo-audit pull`. Install the Python packages from [Requirements](#requirements) once.
+
+### Build the zip yourself
+
+From inside the cloned repo, on macOS, Linux or Windows (anywhere `git` works):
+
+```bash
+git archive --format=zip --prefix=seo-audit/ -o seo-audit.zip HEAD
+```
+
+This gives the folder the right name whatever your clone is called, and leaves out repo-only files (see `.gitattributes`). Check it with `unzip -l seo-audit.zip`: every entry should start with `seo-audit/`.
+
+A GitHub Action builds this zip and attaches it to every release automatically.
+
+### Troubleshooting
+
+| Problem | Fix |
+|---------|-----|
+| Upload rejected | The zip must contain a `seo-audit/` folder with `SKILL.md` inside it, not loose files and not `seo-audit-main/`. Use the release zip. |
+| Skill never triggers | Check it's turned on under Customize → Skills, then ask directly: "Run an SEO audit for https://…" |
+| PDF step fails with a missing module | Run `pip install reportlab pypdfium2 pillow` (in chat, ask Claude to install them). |
+
+---
+
 ## Usage
 
 ```
@@ -61,31 +107,20 @@ seo-audit/
 
 ## Requirements
 
-- A browser tool that can evaluate JavaScript (for recon and brand colors). Without one, Claude falls back to fetching pages and notes what it couldn't check.
-- Python 3 with `reportlab`, `pypdfium2` and `pillow`:
+- **Code execution** turned on (Claude app) or Python 3 installed (Claude Code).
+- Python packages `reportlab`, `pypdfium2` and `pillow`. In the Claude app they are usually available already, and Claude installs them if not. In Claude Code, install them once:
   ```bash
   pip install reportlab pypdfium2 pillow
   ```
-- Fonts are bundled — no other skill needed.
+- Optional: a browser tool that can run JavaScript, for live recon and brand colors. Without one, Claude fetches pages instead and notes what it couldn't check.
+- Fonts are bundled, so no other skill is needed.
 
-Try the renderer on the example:
+Try the renderer on the example (from the skill folder):
 
 ```bash
 python3 scripts/build_report.py assets/findings.example.json -o example.pdf
 python3 scripts/check_pdf.py example.pdf
 ```
-
----
-
-## Installation
-
-Zip the folder and upload it through Claude's skill settings:
-
-```bash
-zip -r seo-audit.zip seo-audit/ -x "seo-audit/.git/*"
-```
-
-For Claude Code, place the folder in `~/.claude/skills/` (or a project's `.claude/skills/`).
 
 ---
 
