@@ -40,9 +40,17 @@ Upload the zip as you downloaded it, without unzipping it first.
 
 On Team and Enterprise plans you can share the uploaded skill with colleagues, or publish it to your organization, from the same Skills page.
 
-### Claude Code
+### Claude Code, Cursor, Codex and other coding agents: one command
 
-Clone straight into your skills folder. The folder name has to be `seo-audit`:
+```bash
+npx skills add southwellmedia/seo-audit
+```
+
+This uses the open [skills CLI](https://skills.sh). It asks which agents to install to; add `-a claude-code -g -y` to install for Claude Code, for all projects, without the prompts. Needs Node.js.
+
+### Claude Code with git
+
+Or clone straight into your skills folder. The folder name has to be `seo-audit`:
 
 ```bash
 git clone https://github.com/southwellmedia/seo-audit.git ~/.claude/skills/seo-audit
