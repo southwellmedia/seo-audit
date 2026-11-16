@@ -1,0 +1,38 @@
+name: Package skill
+
+# Builds seo-audit.zip (the upload-ready skill) and attaches it to each release.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to attach the zip to (e.g. v2.0)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
+
+      - name: Check folder name matches the skill name
+        run: |
+          name=$(sed -n 's/^name:[[:space:]]*//p' SKILL.md | head -1)
+          test "$name" = "seo-audit" || { echo "SKILL.md name is '$name', expected 'seo-audit'"; exit 1; }
+
+      - name: Build zip with seo-audit/ as the top-level folder
+        run: |
+          git archive --format=zip --prefix=seo-audit/ -o seo-audit.zip HEAD
+          unzip -l seo-audit.zip
+          unzip -l seo-audit.zip | grep -q " seo-audit/SKILL.md$"
+
+      - name: Attach to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name || inputs.tag }}" seo-audit.zip --clobber
